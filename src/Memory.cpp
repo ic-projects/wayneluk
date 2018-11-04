@@ -38,7 +38,7 @@ void Memory::writeByte(uint32_t addr, uint8_t byte) {
         putchar(byte);
         return;
     }
-    std::cerr << "Attempted to write to invalid or read-only memory (0x" << std::hex << addr << ")" << std::endl;
+    std::cerr << "Attempted to write to invalid or read-only memory address (0x" << std::hex << addr << ")" << std::endl;
     std::exit(-11);
 }
 
