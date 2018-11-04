@@ -15,6 +15,7 @@
 class Memory {
 public:
     Memory(std::basic_istream<char>& binaryInput, size_t length);
+    static size_t getSizeOfInstructionMemory();
     uint8_t readByte(uint32_t addr);
     uint32_t readWord(uint32_t addr);
     void writeByte(uint32_t addr, uint8_t byte);

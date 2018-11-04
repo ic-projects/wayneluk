@@ -9,6 +9,10 @@ Memory::Memory(std::basic_istream<char>& binaryInput, size_t length) {
     binaryInput.read(reinterpret_cast<char*>(instructionMemory), length);
 }
 
+size_t Memory::getSizeOfInstructionMemory() {
+    return sizeof(instructionMemory);
+}
+
 uint8_t Memory::readByte(uint32_t addr) {
     if ((addr >= ADDR_INSTR) && (addr < ADDR_INSTR + sizeof(instructionMemory))) {
         return instructionMemory[addr - ADDR_INSTR];

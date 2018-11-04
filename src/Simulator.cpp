@@ -23,9 +23,9 @@ int main (int argc, char *argv[]) {
     auto length = static_cast<size_t>(binaryInput.tellg());
     binaryInput.seekg(0, ifstream::beg);
     // Check for buffer overflow
-    if (length > sizeof (binaryInput)) {
+    if (length > Memory::getSizeOfInstructionMemory()) {
         cerr << "The input file " << argv[1] << " is larger than the instruction memory" << endl;
-        length = sizeof (binaryInput);
+        length = sizeof (Memory::getSizeOfInstructionMemory());
     }
     // Read binary into simulated instruction memory
     auto *memory = new Memory(binaryInput, length);
