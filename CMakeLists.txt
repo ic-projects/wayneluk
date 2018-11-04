@@ -12,5 +12,5 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Werror")
 #endif()
 
 include_directories(${PROJECT_SOURCE_DIR})
-add_executable(simulator src/Simulator.cpp src/CPU/CPU.cpp src/CPU/CPU.h src/Instruction/Instruction.cpp src/Instruction/Instruction.h src/Instruction/RegisterInstruction.cpp src/Instruction/RegisterInstruction.h src/Instruction/JumpInstruction.cpp src/Instruction/JumpInstruction.h src/Instruction/ImmediateInstruction.cpp src/Instruction/ImmediateInstruction.h)
+add_executable(simulator src/Simulator.cpp src/CPU.cpp src/CPU.h src/Instruction.h src/Memory.cpp src/Memory.h src/Instruction.cpp)
 #target_link_libraries(simulator Boost)

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "src/CPU/CPU.h"
+#include "CPU.h"
 
 using namespace std;
 
@@ -27,8 +27,13 @@ int main (int argc, char *argv[]) {
         cerr << "The input file " << argv[1] << " is larger than the instruction memory" << endl;
         length = sizeof (binaryInput);
     }
-    // Create a simulated CPU by reading binary into instruction memory
-    CPU *cpu = new CPU(binaryInput, length);
+    // Read binary into simulated instruction memory
+    auto *memory = new Memory(binaryInput, length);
+    // Create simulated CPU and begin simulation
+    auto *cpu = new CPU(memory);
     cpu->simulate();
+    // Free memory and exit
+    delete(memory);
+    delete(cpu);
     exit(0);
 }
