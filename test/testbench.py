@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from os import listdir, remove
-from os.path import isfile, join
+from os import listdir, makedirs, remove
+from os.path import isfile, isdir, join
 from random import choice
 from subprocess import call, Popen, PIPE
 from sys import argv, stderr
@@ -24,6 +24,15 @@ try:
     simulator = argv[1]
 except IndexError:
     simulator = DEFAULT_SIMULATOR
+# Check simulator and tests exist
+if not isfile(simulator):
+    print("The simulator binary  " + simulator + " does not exist", file=stderr)
+    exit(1)
+if not isdir(TEST_SRC_PATH):
+    print("The test sources path " + TEST_SRC_PATH + " does not exist", file=stderr)
+    exit(1)
+if not isdir(TEST_BIN_PATH):
+    makedirs(TEST_BIN_PATH)
 # Iterate through tests
 for f in listdir(TEST_SRC_PATH):
     if isfile(join(TEST_SRC_PATH, f)) and f.endswith(".s"):
@@ -33,23 +42,32 @@ for f in listdir(TEST_SRC_PATH):
         obj = join(TEST_BIN_PATH, "{}.mips.o".format(test_name))
         elf = join(TEST_BIN_PATH, "{}.mips.elf".format(test_name))
         binary = join(TEST_BIN_PATH, "{}.mips.bin".format(test_name))
-        call(" ".join([MIPS_CC,
+        rc = call(" ".join([MIPS_CC,
                        MIPS_CCFLAGS,
                        "-c", assembly,
                        "-o", obj]),
              shell=True)
-        call(" ".join([MIPS_CC,
+        if rc != 0:
+            print("Failed to compile the test assembly " + assembly, file=stderr)
+            continue
+        rc = call(" ".join([MIPS_CC,
                        MIPS_CCFLAGS,
                        MIPS_LDFLAGS,
                        "-T", LINKER_FILE, obj,
                        "-o", elf]),
              shell=True)
-        call(" ".join([MIPS_OBJCOPY,
+        if rc != 0:
+            print("Failed to link the test object  " + obj, file=stderr)
+            continue
+        rc = call(" ".join([MIPS_OBJCOPY,
                        "-O binary",
                        "--only-section=.text",
                        elf,
                        binary]),
              shell=True)
+        if rc != 0:
+            print("Failed to copy the test elf  " + elf, file=stderr)
+            continue
         remove(obj)
         remove(elf)
         # Get testing info
@@ -59,10 +77,10 @@ for f in listdir(TEST_SRC_PATH):
             lines = assembly_file.readlines()
             try:
                 expected_exit_code = int(lines[0].split("exit code: ")[-1])
-                description = lines[1].split("description: ")[-1]
-            except IndexError:
-                print("The input file " + str(assembly_file) + " is not correctly formatted", file=stderr)
-                exit(1)
+                description = lines[1].split("description: ")[-1].strip()
+            except ValueError or IndexError:
+                print("The input file " + assembly + " is not correctly formatted", file=stderr)
+                continue
         # Get testing input
         test_input = ""
         inputs = join(TEST_SRC_PATH, "{}.in".format(test_name))
@@ -78,6 +96,7 @@ for f in listdir(TEST_SRC_PATH):
         # Run test
         test_process = Popen(" ".join([simulator, binary]),
                              stdin=PIPE,
+                             stderr=PIPE,
                              stdout=PIPE,
                              shell=True)
         test_output, _ = test_process.communicate(test_input)

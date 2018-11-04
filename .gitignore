@@ -1,0 +1,10 @@
+.idea
+bin/build
+bin/CMakeFiles
+bin/cmake_install.cmake
+bin/CMakeCache.txt
+bin/Makefile
+bin/testbench.spec
+cmake-build-debug
+test/__pycache__
+test/bin

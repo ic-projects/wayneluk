@@ -11,55 +11,55 @@ void CPU::executeInstruction(uint32_t instruction) {
         case R:
             return executeRInstruction(instruction);
         case ADDI:
-            return addi(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _addi(REGS(instruction), REGT(instruction), IMM(instruction));
         case ADDIU:
-            return;
+            return _addiu(REGS(instruction), REGT(instruction), IMM(instruction));
         case ANDI:
-            return;
+            return _andi(REGS(instruction), REGT(instruction), IMM(instruction));
         case BEQ:
-            return;
+            return _beq(REGS(instruction), REGT(instruction), IMM(instruction));
         case B_OTHER:
-            return executeBranchInstruction(instruction);
+            return executeBOtherInstruction(instruction);
         case BGTZ:
-            return;
+            return _bgtz(REGS(instruction), REGT(instruction), IMM(instruction));
         case BLEZ:
-            return;
+            return _blez(REGS(instruction), REGT(instruction), IMM(instruction));
         case BNE:
-            return;
+            return _bne(REGS(instruction), REGT(instruction), IMM(instruction));
         case J:
-            return;
+            return _j(TARGET(instruction));
         case JAL:
-            return;
+            return _jal(TARGET(instruction));
         case LB:
-            return;
+            return _lb(REGS(instruction), REGT(instruction), IMM(instruction));
         case LBU:
-            return;
+            return _lbu(REGS(instruction), REGT(instruction), IMM(instruction));
         case LH:
-            return;
+            return _lh(REGS(instruction), REGT(instruction), IMM(instruction));
         case LHU:
-            return;
+            return _lhu(REGS(instruction), REGT(instruction), IMM(instruction));
         case LUI:
-            return lui(REGT(instruction), IMM(instruction));
+            return _lui(REGT(instruction), IMM(instruction));
         case LW:
-            return;
+            return _lw(REGS(instruction), REGT(instruction), IMM(instruction));
         case LWL:
-            return;
+            return _lwl(REGS(instruction), REGT(instruction), IMM(instruction));
         case LWR:
-            return;
+            return _lwr(REGS(instruction), REGT(instruction), IMM(instruction));
         case ORI:
-            return;
+            return _ori(REGS(instruction), REGT(instruction), IMM(instruction));
         case SB:
-            return sb(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _sb(REGS(instruction), REGT(instruction), IMM(instruction));
         case SH:
-            return;
+            return _sh(REGS(instruction), REGT(instruction), IMM(instruction));
         case SLTI:
-            return;
+            return _slti(REGS(instruction), REGT(instruction), IMM(instruction));
         case SLTIU:
-            return;
+            return _sltiu(REGS(instruction), REGT(instruction), IMM(instruction));
         case SW:
-            return sw(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _sw(REGS(instruction), REGT(instruction), IMM(instruction));
         case XORI:
-            return;
+            return _xori(REGS(instruction), REGT(instruction), IMM(instruction));
         default:
             reportInvalidInstruction(instruction);
     }
@@ -68,104 +68,83 @@ void CPU::executeInstruction(uint32_t instruction) {
 void CPU::executeRInstruction(uint32_t instruction) {
     switch (FNCODE(instruction)) {
         case ADD:
-            return;
+            return _add(REGS(instruction), REGT(instruction), REGD(instruction));
         case ADDU:
-            return;
+            return _addu(REGS(instruction), REGT(instruction), REGD(instruction));
         case AND:
-            return;
+            return _and(REGS(instruction), REGT(instruction), REGD(instruction));
         case DIV:
-            return;
+            return _div(REGS(instruction), REGT(instruction));
         case DIVU:
-            return;
+            return _divu(REGS(instruction), REGT(instruction));
         case JALR:
-            return;
+            return _jalr(REGS(instruction), REGD(instruction));
         case JR:
-            return;
+            return _jr(REGS(instruction));
         case MFHI:
-            return;
+            return _mfhi(REGS(instruction));
         case MFLO:
-            return;
+            return _mflo(REGS(instruction));
         case MTHI:
-            return;
+            return _mthi(REGS(instruction));
         case MTLO:
-            return;
+            return _mtlo(REGS(instruction));
         case MULT:
-            return;
+            return _mult(REGS(instruction), REGT(instruction));
         case MULTU:
-            return;
-        case NOR:
-            return;
+            return _multu(REGS(instruction), REGT(instruction));
         case OR:
-            return;
+            return _or(REGS(instruction), REGT(instruction), REGD(instruction));
         case SLL:
-            return;
+            return _sll(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
         case SLLV:
-            return;
+            return _sllv(REGS(instruction), REGT(instruction), REGD(instruction));
         case SLT:
-            return;
+            return _slt(REGS(instruction), REGT(instruction), REGD(instruction));
         case SLTU:
-            return;
+            return _sltu(REGS(instruction), REGT(instruction), REGD(instruction));
         case SRA:
-            return;
+            return _sra(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
         case SRAV:
-            return;
+            return _srav(REGS(instruction), REGT(instruction), REGD(instruction));
         case SRL:
-            return;
+            return _srl(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
         case SRLV:
-            return;
+            return _srlv(REGS(instruction), REGT(instruction), REGD(instruction));
         case SUB:
-            return;
+            return _sub(REGS(instruction), REGT(instruction), REGD(instruction));
         case SUBU:
-            return;
+            return _subu(REGS(instruction), REGT(instruction), REGD(instruction));
         case XOR:
-            return;
+            return _xor(REGS(instruction), REGT(instruction), REGD(instruction));
         default:
             reportInvalidInstruction(instruction);
     }
 }
 
-void CPU::executeBranchInstruction(uint32_t instruction) {
+void CPU::executeBOtherInstruction(uint32_t instruction) {
     switch (REGT(instruction)) {
         case BGEZ:
-            return;
+            return _bgez(REGS(instruction), REGT(instruction), IMM(instruction));
         case BGEZAL:
-            return;
+            return _bgezal(REGS(instruction), REGT(instruction), IMM(instruction));
         case BLTZ:
-            return;
+            return _bltz(REGS(instruction), REGT(instruction), IMM(instruction));
         case BLTZAL:
-            return;
+            return _bltzal(REGS(instruction), REGT(instruction), IMM(instruction));
         default:
             reportInvalidInstruction(instruction);
     }
 }
 
 void CPU::reportInvalidInstruction(uint32_t instruction) {
-    std::cerr << "Attempted to execute invalid instruction (opcode: 0x" << std::hex << OPCODE(instruction) << ")" << std::endl;
+    std::cerr << "Attempted to execute invalid instruction (opcode: 0x" << std::hex << OPCODE(instruction) << ")"
+              << std::endl;
     std::exit(-12);
 }
 
-void CPU::addi(uint32_t regs, uint32_t regt, uint32_t imm) {
-    //TODO FIX ME
-    writeRegister(regt, readRegister(regs) + imm);
-}
 
-void CPU::lui(uint32_t regt, uint32_t imm) {
-    writeRegister(regt, imm << 16);
-}
-
-void CPU::sb(uint32_t regs, uint32_t regt, uint32_t imm) {
-    memory->writeByte(readRegister(regs) + imm, readRegister(regt) & 0xFF);
-}
-
-void CPU::sw(uint32_t regs, uint32_t regt, uint32_t imm) {
-    memory->writeWord(readRegister(regs) + imm, readRegister(regt));
-}
-
-void CPU::addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
-    writeRegister(regsd, readRegister(regs) + readRegister(regst));
-}
-
-void CPU::add(uint32_t regs, uint32_t regt, uint32_t regd) {
+void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
     int32_t sourceRegister = readRegister(regs);
     int32_t otherSourceRegister = readRegister(regt);
     int64_t result = sourceRegister + otherSourceRegister;
@@ -177,232 +156,251 @@ void CPU::add(uint32_t regs, uint32_t regt, uint32_t regd) {
     }
 
     writeRegister(regd, otherResult);
-
 }
 
-void CPU::addiu(uint32_t regs, uint32_t regt, int32_t signExtImm) {
-    writeRegister(regt, readRegister(regs) + signExtImm);
+void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
+    //TODO FIX ME
+    writeRegister(regt, readRegister(regs) + imm);
 }
 
-void CPU::logicalAnd(uint32_t regs, uint32_t regt, uint32_t regd) {
+void CPU::_addiu(uint32_t regs, uint32_t regt, int32_t imm) {
+    writeRegister(regt, readRegister(regs) + imm);
+}
+
+void CPU::_addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
+    writeRegister(regsd, readRegister(regs) + readRegister(regst));
+}
+
+void CPU::_and(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) & readRegister(regt));
 }
 
-void CPU::logicalAndI(uint32_t regs, uint32_t regt, int32_t zeroExtImm) {
-    int32_t  source = readRegister(regs);
-    uint32_t result = source & zeroExtImm;
+void CPU::_andi(uint32_t regs, uint32_t regt, int32_t imm) {
+    int32_t source = readRegister(regs);
+    uint32_t result = source & imm;
     writeRegister(regt, result);
 }
 
+void CPU::_beq(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
 
-void CPU::jr(uint32_t regs) {
+void CPU::_bgez(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_bgezal(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_bgtz(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_blez(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_bltz(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_bltzal(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_bne(uint32_t regs, uint32_t regt, int32_t imm) {
+    (void) regs;
+    (void) regt;
+    (void) imm;
+}
+
+void CPU::_div(uint32_t regs, uint32_t regt) {
+    writeLORegister((int32_t) readRegister(regs) / (int32_t) readRegister(regt));
+    writeHIRegister((int32_t) readRegister(regs) % (int32_t) readRegister(regt));
+}
+
+void CPU::_divu(uint32_t regs, uint32_t regt) {
+    writeLORegister(readRegister(regs) / readRegister(regt));
+    writeHIRegister(readRegister(regs) % readRegister(regt));
+}
+
+void CPU::_j(int32_t target) {
+    (void) target;
+}
+
+void CPU::_jal(int32_t target) {
+    (void) target;
+}
+
+void CPU::_jalr(uint32_t regs, uint32_t regd) {
+    (void) regs;
+    (void) regd;
+}
+
+void CPU::_jr(uint32_t regs) {
     setProgramCounter(readRegister(regs));
 }
 
-void CPU::lw(uint32_t regs, uint32_t regt, int32_t signExtImm) {
-    writeRegister(regt, memory->readWord(readRegister(regs) + signExtImm));
-}
-
-void CPU::logicalOr(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, readRegister(regs) | readRegister(regt));
-}
-
-void CPU::logicalOrI(uint32_t regs, uint32_t regt, int32_t signExtImm) {
-    int32_t  source = readRegister(regs);
-    uint32_t result = source | signExtImm;
-    writeRegister(regt, result);
-}
-
-
-void CPU::sh(uint32_t regs, uint32_t regt, int32_t signExtImm) {
-    memory->writeHalfWord(readRegister(regs) + signExtImm, (readRegister(regt) & 0x0000FFFF));
-}
-
-void CPU::beq(uint32_t regs , uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::bgez(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::bgezal(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::bgtz(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::blez(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::jal(int32_t addr) {
-    (void) addr;
-}
-
-void CPU::jalr(int32_t addr) {
-    (void) addr;
-}
-
-void CPU::bltz(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::bltzal(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::bne(uint32_t regs, uint32_t regt, int32_t branchAddr) {
-    (void) regs;
-    (void) regt;
-    (void)branchAddr;
-}
-
-void CPU::j(int32_t addr) {
-    (void) addr;
-}
-
-void CPU::lb(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lb(uint32_t regs, uint32_t regt, int32_t imm) {
     int32_t data = memory->readByte(regs + imm);
     writeRegister(regt, data);
 }
 
-void CPU::lbu(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lbu(uint32_t regs, uint32_t regt, int32_t imm) {
     uint32_t data = memory->readByte(regs + imm);
     writeRegister(regt, data);
 }
 
-void CPU::lh(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lh(uint32_t regs, uint32_t regt, int32_t imm) {
     int32_t data = memory->readHalfWord(regs + imm);
     writeRegister(regt, data);
 }
 
-void CPU::lhu(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lhu(uint32_t regs, uint32_t regt, int32_t imm) {
     uint32_t data = memory->readHalfWord(regs + imm);
     writeRegister(regt, data);
 }
 
-void CPU::lwl(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lui(uint32_t regt, uint32_t imm) {
+    writeRegister(regt, imm << 16);
+}
+
+void CPU::_lw(uint32_t regs, uint32_t regt, int32_t imm) {
+    writeRegister(regt, memory->readWord(readRegister(regs) + imm));
+}
+
+void CPU::_lwl(uint32_t regs, uint32_t regt, int32_t imm) {
     (void) regs;
     (void) regt;
-    (void)imm;
+    (void) imm;
 }
 
-void CPU::lwr(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lwr(uint32_t regs, uint32_t regt, int32_t imm) {
     (void) regs;
     (void) regt;
-    (void)imm;
+    (void) imm;
 }
 
-void CPU::logicalXorI(uint32_t regs, uint32_t regt, uint32_t imm) {
-    writeRegister(regt, readRegister(regs) ^ imm);
+void CPU::_mfhi(uint32_t regd) {
+    writeRegister(regd, readHIRegister());
 }
 
-void CPU::logicalXor(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, readRegister(regs) ^ readRegister(regt));
+void CPU::_mflo(uint32_t regd) {
+    writeRegister(regd, readLORegister());
 }
 
-void CPU::subu(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, regs - regt);
+void CPU::_mthi(uint32_t regs) {
+    writeHIRegister(regs);
 }
 
-void CPU::sub(uint32_t regs, uint32_t regt, uint32_t regd) {
-    //TODO FIX ME - OVERFLOW
-    writeRegister(regd, regs - regt);
+void CPU::_mtlo(uint32_t regs) {
+    writeLORegister(regs);
 }
 
-void CPU::srlv(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, readRegister(regs) >> (readRegister(regt) & 0x0000000F));
+void CPU::_mult(uint32_t regs, uint32_t regt) {
+    int64_t result = (int32_t) readRegister(regs) * (int32_t) readRegister(regt);
+    writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
+    writeLORegister((result & 0x00000000FFFFFFFF));
 }
 
-void CPU::srl(uint32_t regs, uint32_t regd, uint32_t shift) {
-    writeRegister(regd, readRegister(regs) >> shift);
-}
-
-void CPU::srav(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, ((int32_t)readRegister(regs)) >> (readRegister(regt) & 0x0000000F));
-}
-
-void CPU::sra(uint32_t regs, uint32_t regd, uint32_t shift) {
-    writeRegister(regd, ((int32_t)readRegister(regs)) >> shift);
-}
-
-void CPU::sltu(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, (uint32_t)(readRegister(regs) < readRegister(regt)));
-}
-
-void CPU::sltiu(uint32_t regs, uint32_t regd, uint32_t constant) {
-    writeRegister(regd, (uint32_t)(readRegister(regs) < constant));
-}
-
-void CPU::slti(uint32_t regs, uint32_t regd, int32_t constant) {
-    writeRegister(regd, ((int32_t)readRegister(regs) < constant));
-}
-
-void CPU::slt(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, ((int32_t)readRegister(regs) < (int32_t)readRegister(regt)));
-}
-
-void CPU::sllv(uint32_t regs, uint32_t regt, uint32_t regd) {
-    //TODO FIX ME - OVERFLOW??? - Prob not
-    writeRegister(regd, ((int32_t)readRegister(regs)) << (readRegister(regt) & 0x0000000F));
-}
-
-void CPU::sll(uint32_t regs, uint32_t regd, uint32_t shift) {
-    //TODO FIX ME - OVERFLOW???? - Prob not
-    writeRegister(regd, ((int32_t)readRegister(regs)) << shift);
-}
-
-void CPU::multu(uint32_t regs, uint32_t regt) {
+void CPU::_multu(uint32_t regs, uint32_t regt) {
     uint64_t result = readRegister(regs) * readRegister(regt);
     writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
     writeLORegister((result & 0x00000000FFFFFFFF));
 }
 
-void CPU::mult(uint32_t regs, uint32_t regt) {
-    int64_t result = (int32_t)readRegister(regs) * (int32_t)readRegister(regt);
-    writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
-    writeLORegister((result & 0x00000000FFFFFFFF));
+void CPU::_or(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, readRegister(regs) | readRegister(regt));
 }
 
-void CPU::mtlo(uint32_t regs) {
-    writeLORegister(regs);
+void CPU::_ori(uint32_t regs, uint32_t regt, int32_t imm) {
+    int32_t source = readRegister(regs);
+    uint32_t result = source | imm;
+    writeRegister(regt, result);
 }
 
-void CPU::mthi(uint32_t regs) {
-    writeHIRegister(regs);
+void CPU::_sb(uint32_t regs, uint32_t regt, uint32_t imm) {
+    memory->writeByte(readRegister(regs) + imm, readRegister(regt) & 0xFF);
 }
 
-void CPU::mflo(uint32_t regd) {
-    writeRegister(regd, readLORegister());
+void CPU::_sh(uint32_t regs, uint32_t regt, int32_t imm) {
+    memory->writeHalfWord(readRegister(regs) + imm, (readRegister(regt) & 0x0000FFFF));
 }
 
-void CPU::mfhi(uint32_t regd) {
-    writeRegister(regd, readHIRegister());
+void CPU::_sll(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
+    //TODO FIX ME - OVERFLOW???? - Prob not
+    writeRegister(regd, ((int32_t) readRegister(regs)) << shiftAmt);
 }
 
-void CPU::div(uint32_t regs, uint32_t regt) {
-    writeLORegister((int32_t) readRegister(regs) / (int32_t) readRegister(regt));
-    writeHIRegister((int32_t) readRegister(regs) % (int32_t) readRegister(regt));
+void CPU::_sllv(uint32_t regs, uint32_t regt, uint32_t regd) {
+    //TODO FIX ME - OVERFLOW??? - Prob not
+    writeRegister(regd, ((int32_t) readRegister(regs)) << (readRegister(regt) & 0x0000000F));
 }
 
-void CPU::divu(uint32_t regs, uint32_t regt) {
-    writeLORegister(readRegister(regs) / readRegister(regt));
-    writeHIRegister(readRegister(regs) % readRegister(regt));
+void CPU::_slt(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, ((int32_t) readRegister(regs) < (int32_t) readRegister(regt)));
+}
+
+void CPU::_slti(uint32_t regs, uint32_t regd, int32_t imm) {
+    writeRegister(regd, ((int32_t) readRegister(regs) < imm));
+}
+
+void CPU::_sltiu(uint32_t regs, uint32_t regd, uint32_t imm) {
+    writeRegister(regd, (uint32_t) (readRegister(regs) < imm));
+}
+
+void CPU::_sltu(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, (uint32_t) (readRegister(regs) < readRegister(regt)));
+}
+
+void CPU::_sra(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
+    writeRegister(regd, ((int32_t) readRegister(regs)) >> shiftAmt);
+}
+
+void CPU::_srav(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, ((int32_t) readRegister(regs)) >> (readRegister(regt) & 0x0000000F));
+}
+
+void CPU::_srl(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
+    writeRegister(regd, readRegister(regs) >> shiftAmt);
+}
+
+void CPU::_srlv(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, readRegister(regs) >> (readRegister(regt) & 0x0000000F));
+}
+
+void CPU::_sub(uint32_t regs, uint32_t regt, uint32_t regd) {
+    //TODO FIX ME - OVERFLOW
+    writeRegister(regd, regs - regt);
+}
+
+void CPU::_subu(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, regs - regt);
+}
+
+void CPU::_sw(uint32_t regs, uint32_t regt, uint32_t imm) {
+    memory->writeWord(readRegister(regs) + imm, readRegister(regt));
+}
+
+void CPU::_xor(uint32_t regs, uint32_t regt, uint32_t regd) {
+    writeRegister(regd, readRegister(regs) ^ readRegister(regt));
+}
+
+void CPU::_xori(uint32_t regs, uint32_t regt, uint32_t imm) {
+    writeRegister(regt, readRegister(regs) ^ imm);
 }
