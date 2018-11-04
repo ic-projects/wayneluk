@@ -34,7 +34,6 @@
 #define MTLO 0b010011
 #define MULT 0b011000
 #define MULTU 0b011001
-#define NOR 0b100111
 #define OR 0b100101
 #define SLL 0b000000
 #define SLLV 0b000100
