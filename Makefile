@@ -1,5 +1,5 @@
 # Example usage:
-# If you have testbench/my_test.c, you can execute the following to create a MIPS binary
+# If you have testbench/my_test.c, you can simulate the following to create a MIPS binary
 # make testbench/my_test.mips.bin
 
 # For simulator

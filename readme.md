@@ -286,7 +286,7 @@ addi2 , addi, Fail, hes2,   Add -5 to $0
 jr2 ,   jr,   Pass, hes2,   JR->NOP->JR->NOP
 ```
 
-Memory-Map
+CPU-Map
 ----------
 
 The memory map of the simulated process is as follows:
@@ -327,7 +327,7 @@ three types, each of which has a numeric code:
 
 - Arithmetic exception (-10) : Any kind of arithmetic problem, such as overflow, divide by zero, ...
 
-- Memory exception     (-11) : Any problem relating to memory, such as address out of range, writing to
+- CPU exception     (-11) : Any problem relating to memory, such as address out of range, writing to
   read-only memory, reading from an address that cannot be read, executing an address that cannot be executed ...
 
 - Invalid instruction  (-12) : The Binary tries to execute a memory location that does not contain a valid
@@ -346,7 +346,7 @@ rely on them being correctly reported.
 that the Binary did wrong. As with exceptions, an error may indicate a genuine problem
 with the Simulator, or it may be due to an interaction between the Simulator and
 the Environment. An example of the former is where a Simulator doesn't support
-a particular op-code (yet), so cannot execute a correct Binary.
+a particular op-code (yet), so cannot simulate a correct Binary.
 
 An example of an error which is _not_ the Simulator's fault is where the Binary has tried
 to output a character, but the request to the Environment has failed in some way. You
