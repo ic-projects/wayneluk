@@ -19,6 +19,8 @@ public:
     uint32_t readWord(uint32_t addr);
     void writeByte(uint32_t addr, uint8_t byte);
     void writeWord(uint32_t addr, uint32_t word);
+    uint32_t readHalfWord(uint32_t addr);
+    void writeHalfWord(uint32_t addr, uint16_t halfword);
 private:
     uint8_t instructionMemory[16777216] = {0};
     uint8_t dataMemory[67108864] = {0};

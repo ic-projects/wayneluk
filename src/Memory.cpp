@@ -49,3 +49,16 @@ void Memory::writeWord(uint32_t addr, uint32_t word) {
     writeByte(addr + 2, (word & 0x0000FF00) >> 8);
     writeByte(addr + 3, (word & 0x000000FF));
 }
+
+uint32_t Memory::readHalfWord(uint32_t addr) {
+    uint16_t val = 0;
+    for(uint i = 0; i < sizeof(uint16_t); i++) {
+        val += readByte(addr+i) << (8 * (sizeof(uint32_t)) - i - 1);
+    }
+    return val;
+}
+
+void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
+    writeByte(addr, (halfword & 0x0000FF00) >> 8);
+    writeByte(addr + 1, (halfword & 0x0000000FF));
+}
