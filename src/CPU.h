@@ -28,8 +28,8 @@ private:
     // Registers
     uint32_t programCounter = ADDR_INSTR;
     uint32_t registerFile[32] = {0};
-    uint32_t HI = {0};
-    uint32_t LO = {0};
+    uint32_t HI = 0;
+    uint32_t LO = 0;
     // Memory
     Memory *memory;
     // Instruction helpers (defined in Instruction.cpp)
