@@ -43,28 +43,28 @@ for f in listdir(TEST_SRC_PATH):
         elf = join(TEST_BIN_PATH, "{}.mips.elf".format(test_name))
         binary = join(TEST_BIN_PATH, "{}.mips.bin".format(test_name))
         rc = call(" ".join([MIPS_CC,
-                       MIPS_CCFLAGS,
-                       "-c", assembly,
-                       "-o", obj]),
-             shell=True)
+                            MIPS_CCFLAGS,
+                            "-c", assembly,
+                            "-o", obj]),
+                  shell=True)
         if rc != 0:
             print("Failed to compile the test assembly " + assembly, file=stderr)
             continue
         rc = call(" ".join([MIPS_CC,
-                       MIPS_CCFLAGS,
-                       MIPS_LDFLAGS,
-                       "-T", LINKER_FILE, obj,
-                       "-o", elf]),
-             shell=True)
+                            MIPS_CCFLAGS,
+                            MIPS_LDFLAGS,
+                            "-T", LINKER_FILE, obj,
+                            "-o", elf]),
+                  shell=True)
         if rc != 0:
             print("Failed to link the test object  " + obj, file=stderr)
             continue
         rc = call(" ".join([MIPS_OBJCOPY,
-                       "-O binary",
-                       "--only-section=.text",
-                       elf,
-                       binary]),
-             shell=True)
+                            "-O binary",
+                            "--only-section=.text",
+                            elf,
+                            binary]),
+                  shell=True)
         if rc != 0:
             print("Failed to copy the test elf  " + elf, file=stderr)
             continue
@@ -105,7 +105,7 @@ for f in listdir(TEST_SRC_PATH):
         test_passed = test_exit_code == expected_exit_code and test_output == expected_output
         # Print result
         print(", ".join([test_name.upper(),
-                        test_name.split("-")[0].upper(),
-                        "Pass" if test_passed else "Fail",
-                        choice(AUTHORS),
-                        description]))
+                         test_name.split("-")[0].upper(),
+                         "Pass" if test_passed else "Fail",
+                         choice(AUTHORS),
+                         description]))
