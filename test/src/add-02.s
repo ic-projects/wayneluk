@@ -1,8 +1,5 @@
 # exit code: 0
 # description: add two negative numbers
-        .data
-
-        .text
         .globl entry
 
 entry:

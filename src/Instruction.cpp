@@ -173,10 +173,12 @@ void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
 }
 
 void CPU::_addiu(uint32_t regs, uint32_t regt, int32_t imm) {
+    std::cout << "I'm HERE1" << std::endl;
     writeRegister(regt, readRegister(regs) + imm);
 }
 
 void CPU::_addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
+    std::cout << "I'm HERE" << std::endl;
     writeRegister(regsd, readRegister(regs) + readRegister(regst));
 }
 
@@ -266,22 +268,22 @@ void CPU::_jr(uint32_t regs) {
 }
 
 void CPU::_lb(uint32_t regs, uint32_t regt, int32_t imm) {
-    int32_t data = memory->readByte(regs + imm);
+    int32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
 void CPU::_lbu(uint32_t regs, uint32_t regt, int32_t imm) {
-    uint32_t data = memory->readByte(regs + imm);
+    uint32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
 void CPU::_lh(uint32_t regs, uint32_t regt, int32_t imm) {
-    int32_t data = memory->readHalfWord(regs + imm);
+    int32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
 void CPU::_lhu(uint32_t regs, uint32_t regt, int32_t imm) {
-    uint32_t data = memory->readHalfWord(regs + imm);
+    uint32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 

@@ -8,6 +8,7 @@
 #define ADDR_INSTR 0x10000000
 #define ADDR_DATA 0x20000000
 #define ADDR_PUTC 0x30000004
+#define ADDR_GETC 0x30000000
 
 #include <cstdint>
 #include <istream>

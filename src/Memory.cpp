@@ -20,11 +20,24 @@ uint8_t Memory::readByte(uint32_t addr) {
     if ((addr >= ADDR_DATA) && (addr < ADDR_DATA + sizeof(dataMemory))) {
         return dataMemory[addr - ADDR_DATA];
     }
+
+    if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
+        int32_t value = getchar();
+        return (value & (0xFF << 8 * (3 - (addr % 4))) >> (8*(3-(addr % 4))));
+    }
+
     std::cerr << "Invalid simulated memory address (0x" << std::hex <<  addr << ") accessed" << std::endl;
     std::exit(-11);
 }
 
 uint32_t Memory::readWord(uint32_t addr) {
+
+    if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
+        if(addr == ADDR_GETC) {
+            int32_t value = getchar();
+            return value;
+        }
+    }
     uint32_t val = 0;
     for (uint i = 0; i < sizeof(uint32_t); i++) {
         // Read big-endian word, 8 bits at a time...
@@ -34,6 +47,13 @@ uint32_t Memory::readWord(uint32_t addr) {
 }
 
 void Memory::writeByte(uint32_t addr, uint8_t byte) {
+
+    if ((addr >= ADDR_PUTC) && (addr < ADDR_PUTC + 4)) {
+        int res = (byte  << (8*(3-(addr % 4))));
+        putchar(res);
+        return;
+    }
+
     if ((addr >= ADDR_DATA) && (addr < ADDR_DATA + sizeof(dataMemory))) {
         dataMemory[addr - ADDR_DATA] = byte;
         return;
@@ -55,6 +75,18 @@ void Memory::writeWord(uint32_t addr, uint32_t word) {
 }
 
 uint32_t Memory::readHalfWord(uint32_t addr) {
+
+    if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
+
+        if (addr % 2 == 0) {
+            int32_t value = getchar();
+            return (value & (0xFFFF << 16 * (1 - (addr % 2))) >> (16*(1-(addr % 2))));
+        } else {
+            std::exit(-11);
+            //TODO - MEMORY LEAKS
+        }
+    }
+
     uint16_t val = 0;
     for(uint i = 0; i < sizeof(uint16_t); i++) {
         val += readByte(addr+i) << (8 * (sizeof(uint32_t)) - i - 1);

@@ -1,10 +1,5 @@
 # exit code: 0
 # description: Add the numbers 25 and 15
-example:
-	    .data
-var1:	.word	23
-
-	   .text
        .globl entry
 entry:
        addi $t1, $0, 20
