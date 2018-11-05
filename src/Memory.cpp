@@ -31,17 +31,22 @@ uint8_t Memory::readByte(uint32_t addr) {
 uint32_t Memory::readWord(uint32_t addr) {
 
     if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
-        if(addr == ADDR_GETC) {
-            int32_t value = getchar();
-            return value;
+        if (addr != ADDR_GETC) {
+            std::exit(-11);
         }
+        int32_t value = getchar();
+        return value;
     }
-    uint32_t val = 0;
-    for (uint i = 0; i < sizeof(uint32_t); i++) {
-        // Read big-endian word, 8 bits at a time...
-        val += readByte(addr + i) << (8 * (sizeof(uint32_t) - i - 1));
+
+    if (addr % 4 == 0) {
+        uint32_t val = 0;
+        for (uint i = 0; i < sizeof(uint32_t); i++) {
+            // Read big-endian word, 8 bits at a time...
+            val += readByte(addr + i) << (8 * (sizeof(uint32_t) - i - 1));
+        }
+        return val;
     }
-    return val;
+    std::exit(-11);
 }
 
 void Memory::writeByte(uint32_t addr, uint8_t byte) {
@@ -64,10 +69,23 @@ void Memory::writeByte(uint32_t addr, uint8_t byte) {
 
 void Memory::writeWord(uint32_t addr, uint32_t word) {
     // Write big-endian word, 8 bits at a time
-    writeByte(addr, (word & 0xFF000000) >> 24);
-    writeByte(addr + 1, (word & 0x00FF0000) >> 16);
-    writeByte(addr + 2, (word & 0x0000FF00) >> 8);
-    writeByte(addr + 3, (word & 0x000000FF));
+
+    if ((addr >= ADDR_PUTC) && (addr < ADDR_PUTC + 4)) {
+        if (addr != ADDR_PUTC) {
+            std::exit(-11);
+        }
+            int8_t res = word & 0xFF;
+            putchar(res);
+            return;
+    }
+    if (addr % 4 == 0) {
+        writeByte(addr, (word & 0xFF000000) >> 24);
+        writeByte(addr + 1, (word & 0x00FF0000) >> 16);
+        writeByte(addr + 2, (word & 0x0000FF00) >> 8);
+        writeByte(addr + 3, (word & 0x000000FF));
+        return;
+    }
+    std::exit(-11);
 }
 
 uint16_t Memory::readHalfWord(uint32_t addr) {
@@ -87,12 +105,15 @@ uint16_t Memory::readHalfWord(uint32_t addr) {
     }
 
 
-
-    uint16_t val = 0;
-    for(uint i = 0; i < sizeof(uint16_t); i++) {
-        val += readByte(addr+i) << (8 * (sizeof(uint32_t)) - i - 1);
+    if(addr % 2 == 0) {
+        uint16_t val = 0;
+        for(uint i = 0; i < sizeof(uint16_t); i++) {
+            val += readByte(addr+i) << (8 * (sizeof(uint32_t)) - i - 1);
+        }
+        return val;
     }
-    return val;
+    std::exit(-11);
+
 }
 
 void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
@@ -101,6 +122,7 @@ void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
         if (addr % 2 != 0) {
             std::exit(-11);
         }
+
         if (addr % 4 == 0) {
             int32_t shift = halfword << 16;
             int8_t res = shift & 0xFF;
@@ -113,6 +135,10 @@ void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
         return;
     }
 
-    writeByte(addr, (halfword & 0x0000FF00) >> 8);
-    writeByte(addr + 1, (halfword & 0x0000000FF));
+    if(addr % 2 == 0) {
+        writeByte(addr, (halfword & 0x0000FF00) >> 8);
+        writeByte(addr + 1, (halfword & 0x0000000FF));
+        return;
+    }
+    std::exit(-11);
 }

@@ -15,6 +15,7 @@ void CPU::simulate() {
         }
         executeInstruction(memory->readWord(programCounter));
         programCounter = programCounter + sizeof(uint32_t);
+
     }
 }
 
