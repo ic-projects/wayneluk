@@ -122,5 +122,5 @@ summary = []
 if failed_count > 0:
     summary.append(str(failed_count) + " " + ("test" if failed_count == 0 else "tests") + " failed")
 if skipped_count > 0:
-    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 0 else "tests") + " were skipped")
+    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 0 else "tests") + " skipped")
 print("\033[0;1;31m" + " and ".join(summary) + "\033[0m", file=stderr)
