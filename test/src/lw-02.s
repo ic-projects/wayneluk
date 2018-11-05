@@ -1,5 +1,5 @@
 # exit code: -1
-# description: (Implementation specifc) Reading EOF from word ADDR_GETC should return -1
+# description: Reading EOF from word ADDR_GETC should return -1
 
        .globl entry
 

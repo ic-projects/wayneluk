@@ -1,5 +1,5 @@
 # exit code: 97
-# description: (Implementation specifc) Reading 'a' from word ADDR_GETC should return 97
+# description: Reading 'a' from word ADDR_GETC should return 97
 
        .globl entry
 

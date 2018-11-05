@@ -264,7 +264,7 @@ void CPU::_jalr(uint32_t regs, uint32_t regd) {
 }
 
 void CPU::_jr(uint32_t regs) {
-    setProgramCounter(readRegister(regs));
+    setProgramCounter(readRegister(regs) - 4);
 }
 
 void CPU::_lb(uint32_t regs, uint32_t regt, int32_t imm) {
