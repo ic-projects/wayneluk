@@ -20,12 +20,10 @@ uint8_t Memory::readByte(uint32_t addr) {
     if ((addr >= ADDR_DATA) && (addr < ADDR_DATA + sizeof(dataMemory))) {
         return dataMemory[addr - ADDR_DATA];
     }
-
     if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
         int32_t value = getchar();
         return (value >> (8 * (3 - (addr % 4))));
     }
-
     std::cerr << "Invalid simulated memory address (0x" << std::hex <<  addr << ") accessed" << std::endl;
     std::exit(-11);
 }

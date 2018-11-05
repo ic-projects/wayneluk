@@ -10,8 +10,7 @@ CPU::CPU(Memory *memory) : memory(memory) {}
 
 void CPU::simulate() {
     while (true) {
-        int32_t  instruction = memory->readWord(programCounter);
-        if (instruction == 0) {
+        if (programCounter == 0) {
             return;
         }
         executeInstruction(memory->readWord(programCounter));

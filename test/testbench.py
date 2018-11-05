@@ -34,7 +34,7 @@ if not isdir(TEST_SRC_PATH):
 if not isdir(TEST_BIN_PATH):
     makedirs(TEST_BIN_PATH)
 # Iterate through tests
-for f in listdir(TEST_SRC_PATH):
+for f in sorted(listdir(TEST_SRC_PATH)):
     if isfile(join(TEST_SRC_PATH, f)) and f.endswith(".s"):
         test_name = f.rsplit(".", 1)[0]
         # Generate binary
@@ -102,7 +102,7 @@ for f in listdir(TEST_SRC_PATH):
         test_output, _ = test_process.communicate(test_input)
         test_exit_code = test_process.returncode
         # Check result
-        test_passed = test_exit_code == expected_exit_code and test_output == expected_output
+        test_passed = test_exit_code == expected_exit_code % 256 and test_output == expected_output
         # Print result
         print(", ".join([test_name.upper(),
                          test_name.split("-")[0].upper(),

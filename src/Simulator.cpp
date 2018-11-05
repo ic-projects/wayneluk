@@ -12,9 +12,6 @@ int main (int argc, char *argv[]) {
         cerr << "Usage: simulator <path to MIPS binary file>" << endl;
         exit(-20);
     }
-    uint32_t val = -1;
-    int32_t val1 = (int32_t) val;
-    cout << val << " " << val1 << endl;
     // Try and load file
     ifstream binaryInput(argv[1], ios::in | ios::binary);
     if(binaryInput.fail()) {
@@ -35,10 +32,6 @@ int main (int argc, char *argv[]) {
     // Create simulated CPU and begin simulation
     auto *cpu = new CPU(memory);
     cpu->simulate();
-
-    for(auto i = 0; i < 32; i++) {
-        cout << i << "    " << cpu->readRegister(i) << endl;
-    }
     // Free memory and exit
     delete(memory);
     delete(cpu);
