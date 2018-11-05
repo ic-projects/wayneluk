@@ -1,9 +1,11 @@
-# exit code: -10
-# description: FIXME: Overflow error test on the add function
+# exit code: 0
+# description: add two negative numbers
+        .data
+
+        .text
         .globl entry
 
 entry:
-        lui $t0, 6
-        # does not compile
-        #lui $t1, 4294967295
-        add $t0, $t1, $t0
+        addi $t0, $0, -10
+        addi $t1, $0, -25
+        add $t2, $t1, $t0

@@ -4,5 +4,5 @@
         .globl entry
 
 entry:
-        lui $t3, 10
-        addi $t1, $t3, -10
+        addi $t1, $0, 10
+

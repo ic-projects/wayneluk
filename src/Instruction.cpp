@@ -154,13 +154,22 @@ void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
         //TODO - FIX ME
         std::exit(-10);
     }
-
     writeRegister(regd, otherResult);
+    std::cout << regs << " " << regt << " " << regd << std::endl;
+    std::cout << readRegister(regs) <<  "  " << readRegister(regt) << "  "  << "  " << otherResult << readRegister(regd) << std::endl;
 }
 
 void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
-    //TODO FIX ME
-    writeRegister(regt, readRegister(regs) + imm);
+    //TODO FIX ME - Overflow
+    int32_t source = (int32_t)readRegister(regs);
+    int32_t constant = (int16_t)imm;
+
+    std::cout << source << " " << constant << std::endl;
+    if ((source < 0 && constant < 0 && ((int32_t) (source + constant) > 0)) ||
+        (source > 0 && constant > 0 && ((int32_t) (source + constant) < 0))) {
+        std::exit(-10);
+    }
+    writeRegister(regt, (int32_t) (source + constant));
 }
 
 void CPU::_addiu(uint32_t regs, uint32_t regt, int32_t imm) {

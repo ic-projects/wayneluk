@@ -1,9 +1,8 @@
-# exit code: -10
-# description: FIXME: Underflow error checking of the addi instruction
+# exit code: 0
+# description: FIXME
 
 
         .globl entry
 
 entry:
-        lui $t6, 100
-        #addi $
+

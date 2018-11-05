@@ -13,8 +13,8 @@
 #define REGT(instr) ((instr & 0x001F0000) >> 16)
 #define TARGET(instr) (instr & 0x03FFFFFF)
 #define IMM(instr) (instr & 0x0000FFFF)
-#define REGD(instr) ((instr & 0x001F0000) >> 16)
-#define SHIFTAMT(instr) ((instr & 0x000007C0) >> 11)
+#define REGD(instr) ((instr & 0x0000F800) >> 11)
+#define SHIFTAMT(instr) ((instr & 0x000007C0) >> 6)
 #define FNCODE(instr) (instr & 0x0000003F)
 
 // 'R' instruction opcode

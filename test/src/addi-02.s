@@ -1,9 +1,8 @@
-# exit code: -10
-# description: FIXME: Overflow checking of addi instruction
+# exit code: 0
+# description: Add a negative number and a positive number
 
         .globl entry
 
 entry:
-        lui $t2, 100
-        # doesn't compile
-        # addi $t0, $t2, 2147483647
+        addi $t0, $0, -50
+        addi $t1, $t0, 50

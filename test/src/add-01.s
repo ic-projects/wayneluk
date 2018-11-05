@@ -1,8 +1,12 @@
 # exit code: 0
-# description: Add the numbers 5 and 1
+# description: Add the numbers 25 and 15
+example:
+	    .data
+var1:	.word	23
 
+	   .text
        .globl entry
 entry:
-       lui $t0, 5
-       lui $t1, 1
-       add $t0, $t0, $t1
+       addi $t1, $0, 20
+       addi $t0, $0, 15
+       add $t5, $t0, $t1
