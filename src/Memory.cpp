@@ -23,7 +23,7 @@ uint8_t Memory::readByte(uint32_t addr) {
 
     if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
         int32_t value = getchar();
-        return (value & (0xFF << 8 * (3 - (addr % 4))) >> (8*(3-(addr % 4))));
+        return (value >> (8 * (3 - (addr % 4))));
     }
 
     std::cerr << "Invalid simulated memory address (0x" << std::hex <<  addr << ") accessed" << std::endl;
@@ -49,7 +49,8 @@ uint32_t Memory::readWord(uint32_t addr) {
 void Memory::writeByte(uint32_t addr, uint8_t byte) {
 
     if ((addr >= ADDR_PUTC) && (addr < ADDR_PUTC + 4)) {
-        int res = (byte  << (8*(3-(addr % 4))));
+        int32_t shift = (byte  << (8*(3-(addr % 4))));
+        int8_t res = shift & 0xFF;
         putchar(res);
         return;
     }
@@ -64,25 +65,30 @@ void Memory::writeByte(uint32_t addr, uint8_t byte) {
 }
 
 void Memory::writeWord(uint32_t addr, uint32_t word) {
-    // Write big-endian word, 8 bits at a time...
+    // Write big-endian word, 8 bits at a time
     writeByte(addr, (word & 0xFF000000) >> 24);
     writeByte(addr + 1, (word & 0x00FF0000) >> 16);
     writeByte(addr + 2, (word & 0x0000FF00) >> 8);
     writeByte(addr + 3, (word & 0x000000FF));
 }
 
-uint32_t Memory::readHalfWord(uint32_t addr) {
+uint16_t Memory::readHalfWord(uint32_t addr) {
 
     if((addr >= ADDR_GETC) && (addr < ADDR_GETC + 4)) {
 
         if (addr % 2 == 0) {
             int32_t value = getchar();
-            return (value & (0xFFFF << 16 * (1 - (addr % 2))) >> (16*(1-(addr % 2))));
+            if (addr % 4 == 0) {
+                return value >> 16;
+            }
+            return value;
         } else {
             std::exit(-11);
             //TODO - MEMORY LEAKS
         }
     }
+
+
 
     uint16_t val = 0;
     for(uint i = 0; i < sizeof(uint16_t); i++) {
@@ -93,7 +99,21 @@ uint32_t Memory::readHalfWord(uint32_t addr) {
 
 void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
 
-
+    if ((addr >= ADDR_PUTC) && (addr < ADDR_PUTC + 4)) {
+        if (addr % 2 != 0) {
+            std::exit(-11);
+        }
+        if (addr % 4 == 0) {
+            int32_t shift = halfword << 16;
+            int8_t res = shift & 0xFF;
+            putchar(res);
+            return;
+        }
+        //int res = (halfword  << (16*(1-(addr % 2))));
+        int res = halfword & 0xFF;
+        putchar(res);
+        return;
+    }
 
     writeByte(addr, (halfword & 0x0000FF00) >> 8);
     writeByte(addr + 1, (halfword & 0x0000000FF));
