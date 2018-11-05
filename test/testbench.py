@@ -85,7 +85,7 @@ for f in listdir(TEST_SRC_PATH):
         test_input = ""
         inputs = join(TEST_SRC_PATH, "{}.in".format(test_name))
         if isfile(inputs):
-            with open(inputs, "r") as input_file:
+            with open(inputs, "rb") as input_file:
                 test_input = input_file.read()
         # Get expected output
         expected_output = b""
