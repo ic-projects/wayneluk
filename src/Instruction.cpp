@@ -155,8 +155,7 @@ void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
         std::exit(-10);
     }
     writeRegister(regd, otherResult);
-    std::cout << regs << " " << regt << " " << regd << std::endl;
-    std::cout << readRegister(regs) <<  "  " << readRegister(regt) << "  "  << "  " << otherResult << readRegister(regd) << std::endl;
+    advanceProgramCounter(4);
 }
 
 void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
@@ -164,252 +163,302 @@ void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
     int32_t source = (int32_t)readRegister(regs);
     int32_t constant = (int16_t)imm;
 
-    std::cout << source << " " << constant << std::endl;
     if ((source < 0 && constant < 0 && ((int32_t) (source + constant) > 0)) ||
         (source > 0 && constant > 0 && ((int32_t) (source + constant) < 0))) {
         std::exit(-10);
     }
     writeRegister(regt, (int32_t) (source + constant));
+    advanceProgramCounter(4);
 }
 
 void CPU::_addiu(uint32_t regs, uint32_t regt, int16_t imm) {
     writeRegister(regt, readRegister(regs) + imm);
+    advanceProgramCounter(4);
 }
 
 void CPU::_addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
     writeRegister(regsd, readRegister(regs) + readRegister(regst));
+    advanceProgramCounter(4);
 }
 
 void CPU::_and(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) & readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_andi(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t source = readRegister(regs);
     uint32_t result = source & imm;
     writeRegister(regt, result);
+    advanceProgramCounter(4);
 }
 
 void CPU::_beq(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
+    if (readRegister(regs) == readRegister(regt)) {
+        advanceProgramCounter(imm << 2);
+    }
+    advanceProgramCounter(4);
 }
 
 void CPU::_bgez(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_bgezal(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_bgtz(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_blez(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_bltz(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_bltzal(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_bne(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_div(uint32_t regs, uint32_t regt) {
     writeLORegister((int32_t) readRegister(regs) / (int32_t) readRegister(regt));
     writeHIRegister((int32_t) readRegister(regs) % (int32_t) readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_divu(uint32_t regs, uint32_t regt) {
     writeLORegister(readRegister(regs) / readRegister(regt));
     writeHIRegister(readRegister(regs) % readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_j(int32_t target) {
     (void) target;
+    advanceProgramCounter(4);
 }
 
 void CPU::_jal(int32_t target) {
     (void) target;
+    advanceProgramCounter(4);
 }
 
 void CPU::_jalr(uint32_t regs, uint32_t regd) {
     (void) regs;
     (void) regd;
+    advanceProgramCounter(4);
 }
 
 void CPU::_jr(uint32_t regs) {
-    setProgramCounter(readRegister(regs) - 4);
+    setProgramCounter(readRegister(regs));
 }
 
 void CPU::_lb(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
+    advanceProgramCounter(4);
 }
 
 void CPU::_lbu(uint32_t regs, uint32_t regt, int16_t imm) {
     uint32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
+    advanceProgramCounter(4);
 }
 
 void CPU::_lh(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
+    advanceProgramCounter(4);
 }
 
 void CPU::_lhu(uint32_t regs, uint32_t regt, int16_t imm) {
     uint32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
+    advanceProgramCounter(4);
 }
 
 void CPU::_lui(uint32_t regt, uint32_t imm) {
     writeRegister(regt, imm << 16);
+    advanceProgramCounter(4);
 }
 
 void CPU::_lw(uint32_t regs, uint32_t regt, int16_t imm) {
     writeRegister(regt, memory->readWord(readRegister(regs) + imm));
+    advanceProgramCounter(4);
 }
 
 void CPU::_lwl(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_lwr(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
+    advanceProgramCounter(4);
 }
 
 void CPU::_mfhi(uint32_t regd) {
     writeRegister(regd, readHIRegister());
+    advanceProgramCounter(4);
 }
 
 void CPU::_mflo(uint32_t regd) {
     writeRegister(regd, readLORegister());
+    advanceProgramCounter(4);
 }
 
 void CPU::_mthi(uint32_t regs) {
     writeHIRegister(regs);
+    advanceProgramCounter(4);
 }
 
 void CPU::_mtlo(uint32_t regs) {
     writeLORegister(regs);
+    advanceProgramCounter(4);
 }
 
 void CPU::_mult(uint32_t regs, uint32_t regt) {
     int64_t result = (int32_t) readRegister(regs) * (int32_t) readRegister(regt);
     writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
     writeLORegister((result & 0x00000000FFFFFFFF));
+    advanceProgramCounter(4);
 }
 
 void CPU::_multu(uint32_t regs, uint32_t regt) {
     uint64_t result = readRegister(regs) * readRegister(regt);
     writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
     writeLORegister((result & 0x00000000FFFFFFFF));
+    advanceProgramCounter(4);
 }
 
 void CPU::_or(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) | readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_ori(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t source = readRegister(regs);
     uint32_t result = source | imm;
     writeRegister(regt, result);
+    advanceProgramCounter(4);
 }
 
 void CPU::_sb(uint32_t regs, uint32_t regt, uint32_t imm) {
     memory->writeByte(readRegister(regs) + imm, readRegister(regt) & 0xFF);
+    advanceProgramCounter(4);
 }
 
 void CPU::_sh(uint32_t regs, uint32_t regt, int16_t imm) {
     memory->writeHalfWord(readRegister(regs) + imm, (readRegister(regt) & 0x0000FFFF));
+    advanceProgramCounter(4);
 }
 
 void CPU::_sll(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
     //TODO FIX ME - OVERFLOW???? - Prob not
     writeRegister(regd, ((int32_t) readRegister(regs)) << shiftAmt);
+    advanceProgramCounter(4);
 }
 
 void CPU::_sllv(uint32_t regs, uint32_t regt, uint32_t regd) {
     //TODO FIX ME - OVERFLOW??? - Prob not
     writeRegister(regd, ((int32_t) readRegister(regs)) << (readRegister(regt) & 0x0000000F));
+    advanceProgramCounter(4);
 }
 
 void CPU::_slt(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, ((int32_t) readRegister(regs) < (int32_t) readRegister(regt)));
+    advanceProgramCounter(4);
 }
 
 void CPU::_slti(uint32_t regs, uint32_t regd, int16_t imm) {
     writeRegister(regd, ((int32_t) readRegister(regs) < imm));
+    advanceProgramCounter(4);
 }
 
 void CPU::_sltiu(uint32_t regs, uint32_t regd, uint32_t imm) {
     writeRegister(regd, (uint32_t) (readRegister(regs) < imm));
+    advanceProgramCounter(4);
 }
 
 void CPU::_sltu(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, (uint32_t) (readRegister(regs) < readRegister(regt)));
+    advanceProgramCounter(4);
 }
 
 void CPU::_sra(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
     writeRegister(regd, ((int32_t) readRegister(regs)) >> shiftAmt);
+    advanceProgramCounter(4);
 }
 
 void CPU::_srav(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, ((int32_t) readRegister(regs)) >> (readRegister(regt) & 0x0000000F));
+    advanceProgramCounter(4);
 }
 
 void CPU::_srl(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
     writeRegister(regd, readRegister(regs) >> shiftAmt);
+    advanceProgramCounter(4);
 }
 
 void CPU::_srlv(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) >> (readRegister(regt) & 0x0000000F));
+    advanceProgramCounter(4);
 }
 
 void CPU::_sub(uint32_t regs, uint32_t regt, uint32_t regd) {
     //TODO FIX ME - OVERFLOW
     writeRegister(regd, regs - regt);
+    advanceProgramCounter(4);
 }
 
 void CPU::_subu(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, regs - regt);
+    advanceProgramCounter(4);
 }
 
 void CPU::_sw(uint32_t regs, uint32_t regt, uint32_t imm) {
     memory->writeWord(readRegister(regs) + imm, readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_xor(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) ^ readRegister(regt));
+    advanceProgramCounter(4);
 }
 
 void CPU::_xori(uint32_t regs, uint32_t regt, uint32_t imm) {
     writeRegister(regt, readRegister(regs) ^ imm);
+    advanceProgramCounter(4);
 }

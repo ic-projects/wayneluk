@@ -33,6 +33,9 @@ if not isdir(TEST_SRC_PATH):
     exit(1)
 if not isdir(TEST_BIN_PATH):
     makedirs(TEST_BIN_PATH)
+# Setup failure counts
+skipped_count = 0
+failed_count = 0
 # Iterate through tests
 for f in sorted(listdir(TEST_SRC_PATH)):
     if isfile(join(TEST_SRC_PATH, f)) and f.endswith(".s"):
@@ -49,6 +52,7 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                   shell=True)
         if rc != 0:
             print("Failed to compile the test assembly " + assembly, file=stderr)
+            skipped_count += 1
             continue
         rc = call(" ".join([MIPS_CC,
                             MIPS_CCFLAGS,
@@ -58,6 +62,7 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                   shell=True)
         if rc != 0:
             print("Failed to link the test object  " + obj, file=stderr)
+            skipped_count += 1
             continue
         rc = call(" ".join([MIPS_OBJCOPY,
                             "-O binary",
@@ -67,6 +72,7 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                   shell=True)
         if rc != 0:
             print("Failed to copy the test elf  " + elf, file=stderr)
+            skipped_count += 1
             continue
         remove(obj)
         remove(elf)
@@ -80,6 +86,7 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                 description = lines[1].split("description: ")[-1].strip()
             except ValueError or IndexError:
                 print("The input file " + assembly + " is not correctly formatted", file=stderr)
+                skipped_count += 1
                 continue
         # Get testing input
         test_input = ""
@@ -103,9 +110,17 @@ for f in sorted(listdir(TEST_SRC_PATH)):
         test_exit_code = test_process.returncode
         # Check result
         test_passed = test_exit_code == expected_exit_code % 256 and test_output == expected_output
+        failed_count += 1 if not test_passed else 0
         # Print result
         print(", ".join([test_name.upper(),
                          test_name.split("-")[0].upper(),
                          "Pass" if test_passed else "Fail",
                          choice(AUTHORS),
                          description if test_passed else description + " (FAILED with exit code " + str(test_exit_code) + ")"]))
+# Print summary to stderr
+summary = []
+if failed_count > 0:
+    summary.append(str(failed_count) + " " + ("test" if failed_count == 0 else "tests") + " failed")
+if skipped_count > 0:
+    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 0 else "tests") + " were skipped")
+print("\033[0;1;31m" + " and ".join(summary) + "\033[0m", file=stderr)

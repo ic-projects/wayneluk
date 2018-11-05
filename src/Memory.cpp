@@ -24,7 +24,7 @@ uint8_t Memory::readByte(uint32_t addr) {
         int32_t value = getchar();
         return (value >> (8 * (3 - (addr % 4))));
     }
-    std::cerr << "Invalid simulated memory address (0x" << std::hex <<  addr << ") accessed" << std::endl;
+    std::cerr << "Attempted to read from non-readable memory address (0x" << std::hex <<  addr << ")" << std::endl;
     std::exit(-11);
 }
 
@@ -58,7 +58,7 @@ void Memory::writeByte(uint32_t addr, uint8_t byte) {
         return;
     }
 
-    std::cerr << "Attempted to write to invalid or read-only memory address (0x" << std::hex << addr << ")" << std::endl;
+    std::cerr << "Attempted to write to non-writeable memory address (0x" << std::hex << addr << ")" << std::endl;
     std::exit(-11);
 }
 
