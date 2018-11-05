@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.0)
 
 Project(Simulator)
 
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Werror")
 
 include_directories(${PROJECT_SOURCE_DIR})
