@@ -32,8 +32,5 @@ int main (int argc, char *argv[]) {
     // Create simulated CPU and begin simulation
     auto *cpu = new CPU(memory);
     cpu->simulate();
-    // Free memory and exit
-    delete(memory);
-    delete(cpu);
     exit(cpu->readRegister(2));
 }
