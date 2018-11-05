@@ -1,5 +1,5 @@
 # exit code: -1
-# description: (Impementation specific) Reading EOF from halfword ADDR_GETC + 2 should return -1
+# description: (Implementation dependant) Reading EOF from halfword ADDR_GETC + 2 should return -1
 
        .globl entry
 

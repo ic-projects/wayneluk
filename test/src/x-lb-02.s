@@ -1,5 +1,5 @@
 # exit code: 0
-# description: (Implementation specifc) Reading 'a' from byte ADDR_GETC should return 0
+# description: (Implementation dependant) Reading 'a' from byte ADDR_GETC should return 0
 
        .globl entry
 

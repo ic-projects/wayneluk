@@ -1,5 +1,5 @@
 # exit code: -1
-# description: (Implementation specifc) Reading EOF from byte ADDR_GETC + 3 should return -1
+# description: (Implementation dependant) Reading EOF from byte ADDR_GETC + 3 should return -1
 
        .globl entry
 

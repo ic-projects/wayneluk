@@ -1,5 +1,5 @@
 # exit code: 97
-# description: (Impementation specific) Reading 'a' from halfword ADDR_GETC + 2 should return 97
+# description: (Implementation dependant) Reading 'a' from halfword ADDR_GETC + 2 should return 97
 
        .globl entry
 
