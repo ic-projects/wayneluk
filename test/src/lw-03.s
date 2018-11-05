@@ -1,7 +1,8 @@
-# exit code: -11
-# description: Unaligned memory access should cause a Memory Error exception
+# exit code: 0
+# description: Aligned memory access at 0x20000000 should return 0
 
        .globl entry
 
 entry:
-        li $t1, 0x30000001
+        lw $v0, 0x20000000
+        jr $zero
