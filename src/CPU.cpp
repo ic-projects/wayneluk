@@ -18,7 +18,7 @@ void CPU::simulate() {
             std::exit(-11);
         }
         executeInstruction(memory->readWord(programCounter));
-        
+
     }
 }
 
