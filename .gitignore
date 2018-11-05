@@ -4,6 +4,8 @@ bin/CMakeFiles
 bin/cmake_install.cmake
 bin/CMakeCache.txt
 bin/Makefile
+bin/mips_simulator
+bin/mips_testbench
 bin/testbench.spec
 cmake-build-debug
 test/__pycache__
