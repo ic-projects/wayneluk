@@ -172,13 +172,11 @@ void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
     writeRegister(regt, (int32_t) (source + constant));
 }
 
-void CPU::_addiu(uint32_t regs, uint32_t regt, int32_t imm) {
-    std::cout << "I'm HERE1" << std::endl;
+void CPU::_addiu(uint32_t regs, uint32_t regt, int16_t imm) {
     writeRegister(regt, readRegister(regs) + imm);
 }
 
 void CPU::_addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
-    std::cout << "I'm HERE" << std::endl;
     writeRegister(regsd, readRegister(regs) + readRegister(regst));
 }
 
@@ -186,55 +184,55 @@ void CPU::_and(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) & readRegister(regt));
 }
 
-void CPU::_andi(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_andi(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t source = readRegister(regs);
     uint32_t result = source & imm;
     writeRegister(regt, result);
 }
 
-void CPU::_beq(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_beq(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bgez(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bgez(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bgezal(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bgezal(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bgtz(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bgtz(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_blez(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_blez(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bltz(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bltz(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bltzal(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bltzal(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_bne(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_bne(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
@@ -267,22 +265,22 @@ void CPU::_jr(uint32_t regs) {
     setProgramCounter(readRegister(regs) - 4);
 }
 
-void CPU::_lb(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lb(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
-void CPU::_lbu(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lbu(uint32_t regs, uint32_t regt, int16_t imm) {
     uint32_t data = memory->readByte(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
-void CPU::_lh(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lh(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
 
-void CPU::_lhu(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lhu(uint32_t regs, uint32_t regt, int16_t imm) {
     uint32_t data = memory->readHalfWord(readRegister(regs) + imm);
     writeRegister(regt, data);
 }
@@ -291,17 +289,17 @@ void CPU::_lui(uint32_t regt, uint32_t imm) {
     writeRegister(regt, imm << 16);
 }
 
-void CPU::_lw(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lw(uint32_t regs, uint32_t regt, int16_t imm) {
     writeRegister(regt, memory->readWord(readRegister(regs) + imm));
 }
 
-void CPU::_lwl(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lwl(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
 }
 
-void CPU::_lwr(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_lwr(uint32_t regs, uint32_t regt, int16_t imm) {
     (void) regs;
     (void) regt;
     (void) imm;
@@ -339,7 +337,7 @@ void CPU::_or(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, readRegister(regs) | readRegister(regt));
 }
 
-void CPU::_ori(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_ori(uint32_t regs, uint32_t regt, int16_t imm) {
     int32_t source = readRegister(regs);
     uint32_t result = source | imm;
     writeRegister(regt, result);
@@ -349,7 +347,7 @@ void CPU::_sb(uint32_t regs, uint32_t regt, uint32_t imm) {
     memory->writeByte(readRegister(regs) + imm, readRegister(regt) & 0xFF);
 }
 
-void CPU::_sh(uint32_t regs, uint32_t regt, int32_t imm) {
+void CPU::_sh(uint32_t regs, uint32_t regt, int16_t imm) {
     memory->writeHalfWord(readRegister(regs) + imm, (readRegister(regt) & 0x0000FFFF));
 }
 
@@ -367,7 +365,7 @@ void CPU::_slt(uint32_t regs, uint32_t regt, uint32_t regd) {
     writeRegister(regd, ((int32_t) readRegister(regs) < (int32_t) readRegister(regt)));
 }
 
-void CPU::_slti(uint32_t regs, uint32_t regd, int32_t imm) {
+void CPU::_slti(uint32_t regs, uint32_t regd, int16_t imm) {
     writeRegister(regd, ((int32_t) readRegister(regs) < imm));
 }
 

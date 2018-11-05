@@ -108,4 +108,4 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                          test_name.split("-")[0].upper(),
                          "Pass" if test_passed else "Fail",
                          choice(AUTHORS),
-                         description]))
+                         description if test_passed else description + " (FAILED with exit code " + str(test_exit_code) + ")"]))
