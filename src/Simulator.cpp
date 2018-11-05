@@ -42,5 +42,5 @@ int main (int argc, char *argv[]) {
     // Free memory and exit
     delete(memory);
     delete(cpu);
-    exit(0);
+    exit(cpu->readRegister(2));
 }

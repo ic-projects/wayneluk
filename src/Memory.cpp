@@ -58,10 +58,7 @@ void Memory::writeByte(uint32_t addr, uint8_t byte) {
         dataMemory[addr - ADDR_DATA] = byte;
         return;
     }
-    if (addr == ADDR_PUTC) {
-        putchar(byte);
-        return;
-    }
+
     std::cerr << "Attempted to write to invalid or read-only memory address (0x" << std::hex << addr << ")" << std::endl;
     std::exit(-11);
 }
@@ -95,6 +92,9 @@ uint32_t Memory::readHalfWord(uint32_t addr) {
 }
 
 void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
+
+
+
     writeByte(addr, (halfword & 0x0000FF00) >> 8);
     writeByte(addr + 1, (halfword & 0x0000000FF));
 }
