@@ -16,10 +16,10 @@ public:
     // Simulate
     void simulate();
     // Registers
-    void setProgramCounter(uint32_t address);
-    uint32_t getProgramCounter();
     uint32_t readRegister(uint32_t reg);
     void writeRegister(uint32_t reg, uint32_t val);
+    void advanceProgramCounter(int32_t offset);
+    void setProgramCounter(uint32_t address);
     uint32_t readHIRegister();
     void writeHIRegister(uint32_t val);
     uint32_t readLORegister();
@@ -27,6 +27,7 @@ public:
 private:
     // Registers
     uint32_t programCounter = ADDR_INSTR;
+    uint32_t nextProgramCounter = ADDR_INSTR + sizeof(int32_t);
     uint32_t registerFile[32] = {0};
     uint32_t HI = 0;
     uint32_t LO = 0;
