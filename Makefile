@@ -6,7 +6,7 @@ build:
 	cmake -build . && \
 	cmake --build . && \
 	pyinstaller ../test/testbench.py
-	cp test/testbench bin
+	cp test/mips_testbench bin
 
 # Dummy for build simulator to conform to spec.
 # To actually build, use `make build`.
