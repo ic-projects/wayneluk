@@ -9,7 +9,7 @@ from sys import argv, stderr
 TEST_SRC_PATH = "test/src"
 TEST_BIN_PATH = "test/bin"
 LINKER_FILE = "test/linker.ld"
-DEFAULT_SIMULATOR = "bin/mips_simulator"
+DEFAULT_SIMULATOR = "bin/simulator"
 
 AUTHORS = ["js4416", "pvk16"]
 
@@ -120,7 +120,7 @@ for f in sorted(listdir(TEST_SRC_PATH)):
 # Print summary to stderr
 summary = []
 if failed_count > 0:
-    summary.append(str(failed_count) + " " + ("test" if failed_count == 0 else "tests") + " failed")
+    summary.append(str(failed_count) + " " + ("test" if failed_count == 1 else "tests") + " failed")
 if skipped_count > 0:
-    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 0 else "tests") + " skipped")
+    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 1 else "tests") + " skipped")
 print("\033[0;1;31m" + " and ".join(summary) + "\033[0m", file=stderr)
