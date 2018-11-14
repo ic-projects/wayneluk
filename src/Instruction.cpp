@@ -82,9 +82,9 @@ void CPU::executeRInstruction(uint32_t instruction) {
         case JR:
             return _jr(REGS(instruction));
         case MFHI:
-            return _mfhi(REGS(instruction));
+            return _mfhi(REGD(instruction));
         case MFLO:
-            return _mflo(REGS(instruction));
+            return _mflo(REGD(instruction));
         case MTHI:
             return _mthi(REGS(instruction));
         case MTLO:
@@ -96,7 +96,7 @@ void CPU::executeRInstruction(uint32_t instruction) {
         case OR:
             return _or(REGS(instruction), REGT(instruction), REGD(instruction));
         case SLL:
-            return _sll(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
+            return _sll(REGT(instruction), REGD(instruction), SHIFTAMT(instruction));
         case SLLV:
             return _sllv(REGS(instruction), REGT(instruction), REGD(instruction));
         case SLT:
@@ -104,11 +104,11 @@ void CPU::executeRInstruction(uint32_t instruction) {
         case SLTU:
             return _sltu(REGS(instruction), REGT(instruction), REGD(instruction));
         case SRA:
-            return _sra(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
+            return _sra(REGT(instruction), REGD(instruction), SHIFTAMT(instruction));
         case SRAV:
             return _srav(REGS(instruction), REGT(instruction), REGD(instruction));
         case SRL:
-            return _srl(REGS(instruction), REGT(instruction), SHIFTAMT(instruction));
+            return _srl(REGT(instruction), REGD(instruction), SHIFTAMT(instruction));
         case SRLV:
             return _srlv(REGS(instruction), REGT(instruction), REGD(instruction));
         case SUB:
@@ -125,7 +125,7 @@ void CPU::executeRInstruction(uint32_t instruction) {
 void CPU::executeBOtherInstruction(uint32_t instruction) {
     switch (REGT(instruction)) {
         case BGEZ:
-            return _bgez(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _bgez(REGS(instruction), IMM(instruction));
         case BGEZAL:
             return _bgezal(REGS(instruction), REGT(instruction), IMM(instruction));
         case BLTZ:
@@ -186,28 +186,32 @@ void CPU::_and(uint32_t regs, uint32_t regt, uint32_t regd) {
     advanceProgramCounter(4);
 }
 
-void CPU::_andi(uint32_t regs, uint32_t regt, int16_t imm) {
+void CPU::_andi(uint32_t regs, uint32_t regt, uint16_t imm) {
     int32_t source = readRegister(regs);
-    uint32_t result = source & imm;
+    uint32_t result = source & (uint32_t)imm;
     writeRegister(regt, result);
     advanceProgramCounter(4);
 }
 
 void CPU::_beq(uint32_t regs, uint32_t regt, int16_t imm) {
+    // TODO - FIX ME - ADVANCED 4 in else?
     if (readRegister(regs) == readRegister(regt)) {
         advanceProgramCounter(imm << 2);
     }
     advanceProgramCounter(4);
 }
 
-void CPU::_bgez(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_bgez(uint32_t regs, int16_t imm) {
+    if ((int32_t)readRegister(regs) >= 0) {
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
+
 }
 
 void CPU::_bgezal(uint32_t regs, uint32_t regt, int16_t imm) {
+
     (void) regs;
     (void) regt;
     (void) imm;
@@ -243,21 +247,34 @@ void CPU::_bltzal(uint32_t regs, uint32_t regt, int16_t imm) {
 }
 
 void CPU::_bne(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+    if (readRegister(regs) != readRegister(regt)) {
+        int32_t signExtImm = imm << 2;
+        advanceProgramCounter(signExtImm);
+    }else {
+        advanceProgramCounter(4);
+    }
+
 }
 
 void CPU::_div(uint32_t regs, uint32_t regt) {
-    writeLORegister((int32_t) readRegister(regs) / (int32_t) readRegister(regt));
-    writeHIRegister((int32_t) readRegister(regs) % (int32_t) readRegister(regt));
+    int32_t divider = readRegister(regt);
+    if (divider == 0) {
+        advanceProgramCounter(4);
+        return;
+    }
+    writeLORegister((int32_t) readRegister(regs) / divider);
+    writeHIRegister((int32_t) readRegister(regs) % divider);
     advanceProgramCounter(4);
 }
 
 void CPU::_divu(uint32_t regs, uint32_t regt) {
-    writeLORegister(readRegister(regs) / readRegister(regt));
-    writeHIRegister(readRegister(regs) % readRegister(regt));
+    uint32_t divider = readRegister(regt);
+    if (divider == 0) {
+        advanceProgramCounter(4);
+        return;
+    }
+    writeLORegister(readRegister(regs) / divider);
+    writeHIRegister(readRegister(regs) % divider);
     advanceProgramCounter(4);
 }
 
@@ -305,7 +322,7 @@ void CPU::_lhu(uint32_t regs, uint32_t regt, int16_t imm) {
     advanceProgramCounter(4);
 }
 
-void CPU::_lui(uint32_t regt, uint32_t imm) {
+void CPU::_lui(uint32_t regt, uint16_t imm) {
     writeRegister(regt, imm << 16);
     advanceProgramCounter(4);
 }
@@ -340,24 +357,26 @@ void CPU::_mflo(uint32_t regd) {
 }
 
 void CPU::_mthi(uint32_t regs) {
-    writeHIRegister(regs);
+    writeHIRegister(readRegister(regs));
     advanceProgramCounter(4);
 }
 
 void CPU::_mtlo(uint32_t regs) {
-    writeLORegister(regs);
+    writeLORegister(readRegister(regs));
     advanceProgramCounter(4);
 }
 
 void CPU::_mult(uint32_t regs, uint32_t regt) {
-    int64_t result = (int32_t) readRegister(regs) * (int32_t) readRegister(regt);
+    int64_t sourceReg = (int32_t) readRegister(regs);
+    int64_t otherSourceReg = (int32_t) readRegister(regt);
+    int64_t result = (sourceReg * otherSourceReg);
     writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
     writeLORegister((result & 0x00000000FFFFFFFF));
     advanceProgramCounter(4);
 }
 
 void CPU::_multu(uint32_t regs, uint32_t regt) {
-    uint64_t result = readRegister(regs) * readRegister(regt);
+    uint64_t result = (uint64_t)readRegister(regs) * (uint64_t)readRegister(regt);
     writeHIRegister((result & 0xFFFFFFFF00000000) >> 32);
     writeLORegister((result & 0x00000000FFFFFFFF));
     advanceProgramCounter(4);
@@ -368,7 +387,7 @@ void CPU::_or(uint32_t regs, uint32_t regt, uint32_t regd) {
     advanceProgramCounter(4);
 }
 
-void CPU::_ori(uint32_t regs, uint32_t regt, int16_t imm) {
+void CPU::_ori(uint32_t regs, uint32_t regt, uint16_t imm) {
     int32_t source = readRegister(regs);
     uint32_t result = source | imm;
     writeRegister(regt, result);
@@ -386,14 +405,12 @@ void CPU::_sh(uint32_t regs, uint32_t regt, int16_t imm) {
 }
 
 void CPU::_sll(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
-    //TODO FIX ME - OVERFLOW???? - Prob not
-    writeRegister(regd, ((int32_t) readRegister(regs)) << shiftAmt);
+    writeRegister(regd, (readRegister(regs)) << shiftAmt);
     advanceProgramCounter(4);
 }
 
 void CPU::_sllv(uint32_t regs, uint32_t regt, uint32_t regd) {
-    //TODO FIX ME - OVERFLOW??? - Prob not
-    writeRegister(regd, ((int32_t) readRegister(regs)) << (readRegister(regt) & 0x0000000F));
+    writeRegister(regd, (readRegister(regt)) << (readRegister(regs) & 0x1F));
     advanceProgramCounter(4);
 }
 
@@ -403,7 +420,7 @@ void CPU::_slt(uint32_t regs, uint32_t regt, uint32_t regd) {
 }
 
 void CPU::_slti(uint32_t regs, uint32_t regd, int16_t imm) {
-    writeRegister(regd, ((int32_t) readRegister(regs) < imm));
+    writeRegister(regd, ((int32_t) readRegister(regs) < (int32_t)imm));
     advanceProgramCounter(4);
 }
 
@@ -423,7 +440,7 @@ void CPU::_sra(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
 }
 
 void CPU::_srav(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, ((int32_t) readRegister(regs)) >> (readRegister(regt) & 0x0000000F));
+    writeRegister(regd, ((int32_t) readRegister(regt)) >> (readRegister(regs) & 0x1F));
     advanceProgramCounter(4);
 }
 
@@ -433,18 +450,25 @@ void CPU::_srl(uint32_t regs, uint32_t regd, uint32_t shiftAmt) {
 }
 
 void CPU::_srlv(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, readRegister(regs) >> (readRegister(regt) & 0x0000000F));
+    writeRegister(regd, readRegister(regt) >> (readRegister(regs) & 0x1F));
     advanceProgramCounter(4);
 }
 
 void CPU::_sub(uint32_t regs, uint32_t regt, uint32_t regd) {
-    //TODO FIX ME - OVERFLOW
-    writeRegister(regd, regs - regt);
+    int32_t sourceRegister = readRegister(regs);
+    int32_t otherSourceRegister = readRegister(regt);
+    int32_t result = sourceRegister - otherSourceRegister;
+
+    if (((sourceRegister < 0 ) && (otherSourceRegister > 0) && (result >= 0)) ||
+        ((sourceRegister > 0) && (otherSourceRegister < 0) && (result <= 0))) {
+        exit(-10);
+    }
+    writeRegister(regd, result);
     advanceProgramCounter(4);
 }
 
 void CPU::_subu(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, regs - regt);
+    writeRegister(regd, readRegister(regs) - readRegister(regt));
     advanceProgramCounter(4);
 }
 
@@ -458,7 +482,8 @@ void CPU::_xor(uint32_t regs, uint32_t regt, uint32_t regd) {
     advanceProgramCounter(4);
 }
 
-void CPU::_xori(uint32_t regs, uint32_t regt, uint32_t imm) {
-    writeRegister(regt, readRegister(regs) ^ imm);
+void CPU::_xori(uint32_t regs, uint32_t regt, uint16_t imm) {
+    uint32_t zeroExtImm = imm;
+    writeRegister(regt, readRegister(regs) ^ zeroExtImm);
     advanceProgramCounter(4);
 }

@@ -44,9 +44,9 @@ private:
     void _addiu(uint32_t regs, uint32_t regt, int16_t imm);
     void _addu(uint32_t regs, uint32_t regt, uint32_t regd);
     void _and(uint32_t regs, uint32_t regt, uint32_t regd);
-    void _andi(uint32_t regs, uint32_t regt, int16_t imm);
+    void _andi(uint32_t regs, uint32_t regt, uint16_t imm);
     void _beq(uint32_t regs, uint32_t regt, int16_t imm);
-    void _bgez(uint32_t regs, uint32_t regt, int16_t imm);
+    void _bgez(uint32_t regs, int16_t imm);
     void _bgezal(uint32_t regs, uint32_t regt, int16_t imm);
     void _bgtz(uint32_t regs, uint32_t regt, int16_t imm);
     void _blez(uint32_t regs, uint32_t regt, int16_t imm);
@@ -63,7 +63,7 @@ private:
     void _lbu(uint32_t regs, uint32_t regt, int16_t imm);
     void _lh(uint32_t regs, uint32_t regt, int16_t imm);
     void _lhu(uint32_t regs, uint32_t regt, int16_t imm);
-    void _lui(uint32_t regt, uint32_t imm);
+    void _lui(uint32_t regt, uint16_t imm);
     void _lw(uint32_t regs, uint32_t regt, int16_t imm);
     void _lwl(uint32_t regs, uint32_t regt, int16_t imm);
     void _lwr(uint32_t regs, uint32_t regt, int16_t imm);
@@ -74,7 +74,7 @@ private:
     void _mult(uint32_t regs, uint32_t regt);
     void _multu(uint32_t regs, uint32_t regt);
     void _or(uint32_t regs, uint32_t regt, uint32_t regd);
-    void _ori(uint32_t regs, uint32_t regt, int16_t imm);
+    void _ori(uint32_t regs, uint32_t regt, uint16_t imm);
     void _sb(uint32_t regs, uint32_t regt, uint32_t imm);
     void _sh(uint32_t regs, uint32_t regt, int16_t imm);
     void _sll(uint32_t regs, uint32_t regd, uint32_t shiftAmt);
@@ -91,7 +91,7 @@ private:
     void _subu(uint32_t regs, uint32_t regt, uint32_t regd);
     void _sw(uint32_t regs, uint32_t regt, uint32_t imm);
     void _xor(uint32_t regs, uint32_t regt, uint32_t regd);
-    void _xori(uint32_t regs, uint32_t regt, uint32_t imm);
+    void _xori(uint32_t regs, uint32_t regt, uint16_t imm);
 };
 
 #endif //SIMULATOR_CPU_H

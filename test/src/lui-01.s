@@ -1,6 +1,7 @@
-# exit code: 0
+# exit code: 1966080
 # description: Load a constant into a register
         .globl entry
 
 entry:
-        lui $t0, 30
+        lui $v0, 30
+        jr $zero
