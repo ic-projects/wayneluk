@@ -297,9 +297,8 @@ void CPU::_jal(uint32_t target) {
 }
 
 void CPU::_jalr(uint32_t regs, uint32_t regd) {
-    (void) regs;
-    (void) regd;
-    advanceProgramCounter(4);
+    writeRegister(regd, getProgramCounter() + 8);
+    setProgramCounter(readRegister(regs));
 }
 
 void CPU::_jr(uint32_t regs) {
