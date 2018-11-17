@@ -21,9 +21,9 @@ void CPU::executeInstruction(uint32_t instruction) {
         case B_OTHER:
             return executeBOtherInstruction(instruction);
         case BGTZ:
-            return _bgtz(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _bgtz(REGS(instruction), IMM(instruction));
         case BLEZ:
-            return _blez(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _blez(REGS(instruction), IMM(instruction));
         case BNE:
             return _bne(REGS(instruction), REGT(instruction), IMM(instruction));
         case J:
@@ -127,11 +127,11 @@ void CPU::executeBOtherInstruction(uint32_t instruction) {
         case BGEZ:
             return _bgez(REGS(instruction), IMM(instruction));
         case BGEZAL:
-            return _bgezal(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _bgezal(REGS(instruction), IMM(instruction));
         case BLTZ:
-            return _bltz(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _bltz(REGS(instruction), IMM(instruction));
         case BLTZAL:
-            return _bltzal(REGS(instruction), REGT(instruction), IMM(instruction));
+            return _bltzal(REGS(instruction), IMM(instruction));
         default:
             reportInvalidInstruction(instruction);
     }
@@ -194,11 +194,12 @@ void CPU::_andi(uint32_t regs, uint32_t regt, uint16_t imm) {
 }
 
 void CPU::_beq(uint32_t regs, uint32_t regt, int16_t imm) {
-    // TODO - FIX ME - ADVANCED 4 in else?
+    // TODO - FIX ME - ADVANCEPC(4) should be in else?
     if (readRegister(regs) == readRegister(regt)) {
         advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
     }
-    advanceProgramCounter(4);
 }
 
 void CPU::_bgez(uint32_t regs, int16_t imm) {
@@ -210,40 +211,46 @@ void CPU::_bgez(uint32_t regs, int16_t imm) {
 
 }
 
-void CPU::_bgezal(uint32_t regs, uint32_t regt, int16_t imm) {
-
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_bgezal(uint32_t regs, int16_t imm) {
+    if((int32_t)readRegister(regs) >= 0) {
+        writeRegister(31, getProgramCounter() + 8);
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
 }
 
-void CPU::_bgtz(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_bgtz(uint32_t regs, int16_t imm) {
+    if ((int32_t)readRegister(regs) > 0) {
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
 }
 
-void CPU::_blez(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_blez(uint32_t regs, int16_t imm) {
+    if ((int32_t)readRegister(regs) <= 0) {
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
 }
 
-void CPU::_bltz(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_bltz(uint32_t regs, int16_t imm) {
+    if ((int32_t)readRegister(regs) < 0) {
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
 }
 
-void CPU::_bltzal(uint32_t regs, uint32_t regt, int16_t imm) {
-    (void) regs;
-    (void) regt;
-    (void) imm;
-    advanceProgramCounter(4);
+void CPU::_bltzal(uint32_t regs, int16_t imm) {
+    if((int32_t)readRegister(regs) < 0) {
+        writeRegister(31, getProgramCounter() + 8);
+        advanceProgramCounter(imm << 2);
+    } else {
+        advanceProgramCounter(4);
+    }
 }
 
 void CPU::_bne(uint32_t regs, uint32_t regt, int16_t imm) {
@@ -278,14 +285,15 @@ void CPU::_divu(uint32_t regs, uint32_t regt) {
     advanceProgramCounter(4);
 }
 
-void CPU::_j(int32_t target) {
-    (void) target;
-    advanceProgramCounter(4);
+void CPU::_j(uint32_t target) {
+    uint32_t address = (getProgramCounter() & 0xF0000000) | (target < 2);
+    setProgramCounter(address);
 }
 
-void CPU::_jal(int32_t target) {
-    (void) target;
-    advanceProgramCounter(4);
+void CPU::_jal(uint32_t target) {
+    writeRegister(31, getProgramCounter() + 8);
+    uint32_t address = (getProgramCounter() & 0xF0000000) | (target < 2);
+    setProgramCounter(address);
 }
 
 void CPU::_jalr(uint32_t regs, uint32_t regd) {

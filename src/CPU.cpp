@@ -40,6 +40,10 @@ void CPU::setProgramCounter(uint32_t address) {
     nextProgramCounter = address;
 }
 
+uint32_t CPU::getProgramCounter() {
+    return programCounter;
+}
+
 uint32_t CPU::readHIRegister() {
     return HI;
 }
