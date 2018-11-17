@@ -1,5 +1,5 @@
 # exit code: 9264751
-# description: shift right by 5
+# description: Shift right by 5
 
        .globl entry
 

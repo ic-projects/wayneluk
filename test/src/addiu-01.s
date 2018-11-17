@@ -1,5 +1,5 @@
 # exit code: -50
-# description: add a negative number to zero should returns the negative number
+# description: Add a negative number to zero should returns the negative number
 
         .globl entry
 

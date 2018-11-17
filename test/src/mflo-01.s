@@ -1,5 +1,5 @@
 # exit code: 100
-# description: return the value stored in the LOW register
+# description: Return the value stored in the LOW register
 
         .globl entry
 

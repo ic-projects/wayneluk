@@ -1,5 +1,5 @@
 # exit code: 4089934592
-# description: mult -300000000 and 15 returns 4089934592 in the LOW register
+# description: Mult -300000000 and 15 returns 4089934592 in the LOW register
 
         .globl entry
 

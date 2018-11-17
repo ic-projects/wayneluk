@@ -6,6 +6,6 @@
 entry:
         addi $t0, $0, 30
         addi $t1, $0, 5
-        divu $t0, $t1
+        div $t0, $t1
         mflo $v0
         jr $zero

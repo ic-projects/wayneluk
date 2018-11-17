@@ -1,5 +1,5 @@
 # exit code: -1056
-# description: shift left -33 by shift value 5
+# description: Shift left -33 by shift value 5
 
        .globl entry
 

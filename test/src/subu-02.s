@@ -1,5 +1,5 @@
 # exit code: -5
-# description: subtract 20 from 15 should return -5
+# description: Subtract 20 from 15 should return -5
 
        .globl entry
 

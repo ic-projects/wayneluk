@@ -1,5 +1,5 @@
 # exit code: 255
-# description: xoring 0 and 255 should return 255
+# description: Xoring 0 and 255 should return 255
 
         .globl entry
 

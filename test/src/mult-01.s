@@ -1,5 +1,5 @@
 # exit code: 25
-# description: mult 5 and 5 returns 25
+# description: Mult 5 and 5 returns 25
 
         .globl entry
 

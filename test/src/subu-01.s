@@ -1,5 +1,5 @@
 # exit code: 5
-# description: subtract 5 from 10 should return 5
+# description: Subtract 5 from 10 should return 5
 
        .globl entry
 

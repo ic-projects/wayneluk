@@ -1,5 +1,5 @@
 # exit code: 5
-# description: shift right by 0 should not modify the number
+# description: Shift right by 0 should not modify the number
 
        .globl entry
 

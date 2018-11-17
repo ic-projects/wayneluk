@@ -1,5 +1,5 @@
 # exit code: 20
-# description: return the value stored in the HIGH register
+# description: Return the value stored in the HIGH register
 
         .globl entry
 

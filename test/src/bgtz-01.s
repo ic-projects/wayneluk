@@ -1,5 +1,5 @@
 # exit code: 2
-# description: branch if 10 is greater than 0 should exit with code 2
+# description: Branch if 10 is greater than 0 should exit with code 2
 
         .globl entry
 

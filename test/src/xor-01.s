@@ -1,5 +1,5 @@
 # exit code: 0
-# description: xoring the same numbers should return 0
+# description: Xoring the same numbers should return 0
 
         .globl entry
 

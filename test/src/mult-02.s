@@ -1,5 +1,5 @@
 # exit code: -50
-# description: mult -5 and 10 returns -50
+# description: Mult -5 and 10 returns -50
 
         .globl entry
 

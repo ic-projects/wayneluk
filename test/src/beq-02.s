@@ -1,5 +1,5 @@
 # exit code: 3
-# description: no Branch when not equal
+# description: No Branch when not equal
 
         .globl entry
 

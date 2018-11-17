@@ -1,5 +1,5 @@
 # exit code: 1
-# description: shift value greater than 31 should only take the first 5 bits as the shift value
+# description: Shift value greater than 31 should only take the first 5 bits as the shift value
 
        .globl entry
 

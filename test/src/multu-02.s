@@ -1,5 +1,5 @@
 # exit code: 4294967281
-# description: multu 0xFFFFFFFF and 0xF returns 4294967281 in the LOW register
+# description: Multu 0xFFFFFFFF and 0xF returns 4294967281 in the LOW register
 
         .globl entry
 

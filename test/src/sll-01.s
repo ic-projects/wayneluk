@@ -1,5 +1,5 @@
 # exit code: 14
-# description: shift left by 1
+# description: Shift left by 1
 
        .globl entry
 

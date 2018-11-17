@@ -1,5 +1,5 @@
 # exit code: 140737488322560
-# description: shift left 0xFFFFFFFF by shift value 15
+# description: Shift left 0xFFFFFFFF by shift value 15
 
        .globl entry
 
