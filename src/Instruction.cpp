@@ -210,8 +210,8 @@ void CPU::_bgez(uint32_t regs, int16_t imm) {
 }
 
 void CPU::_bgezal(uint32_t regs, int16_t imm) {
+    writeRegister(31, getProgramCounter() + 8);
     if((int32_t)readRegister(regs) >= 0) {
-        writeRegister(31, getProgramCounter() + 8);
         advanceProgramCounter(imm << 2);
     } else {
         advanceProgramCounter(4);
@@ -243,8 +243,8 @@ void CPU::_bltz(uint32_t regs, int16_t imm) {
 }
 
 void CPU::_bltzal(uint32_t regs, int16_t imm) {
+    writeRegister(31, getProgramCounter() + 8);
     if((int32_t)readRegister(regs) < 0) {
-        writeRegister(31, getProgramCounter() + 8);
         advanceProgramCounter(imm << 2);
     } else {
         advanceProgramCounter(4);
