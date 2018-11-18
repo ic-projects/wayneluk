@@ -1,5 +1,6 @@
 # exit code: -35
 # description: Add two negative numbers -10 and -25 returns -35
+
         .globl entry
 
 entry:

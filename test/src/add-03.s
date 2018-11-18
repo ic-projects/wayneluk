@@ -1,5 +1,6 @@
 # exit code: 40
 # description: Add a positive number (50) and a negative number (-10) returns 40
+
         .globl entry
 
 entry:

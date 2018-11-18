@@ -2,6 +2,7 @@
 // Created by jordan on 04/11/18.
 //
 
+#include <climits>
 #include <cstdint>
 #include "CPU.h"
 #include "Instruction.h"
@@ -145,16 +146,13 @@ void CPU::reportInvalidInstruction(uint32_t instruction) {
 
 
 void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
-    int32_t sourceRegister = readRegister(regs);
-    int32_t otherSourceRegister = readRegister(regt);
-    int64_t result = sourceRegister + otherSourceRegister;
-    int32_t otherResult = sourceRegister + otherSourceRegister;
+    int32_t a = readRegister(regs);
+    int32_t b = readRegister(regt);
 
-    if (result != otherResult) {
-        //TODO - FIX ME
+    if ((a > 0 && b > INT_MAX - a) || (a < 0 && b < INT_MIN - a)) {
         std::exit(-10);
     }
-    writeRegister(regd, otherResult);
+    writeRegister(regd, a + b);
     advanceProgramCounter(4);
 }
 
