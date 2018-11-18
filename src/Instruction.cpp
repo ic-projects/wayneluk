@@ -150,6 +150,7 @@ void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
     int32_t b = readRegister(regt);
 
     if ((a > 0 && b > INT_MAX - a) || (a < 0 && b < INT_MIN - a)) {
+        std::cerr << "Integer overflow detected (" << a << " + " << b << ")" << std::endl;
         std::exit(-10);
     }
     writeRegister(regd, a + b);
@@ -158,14 +159,14 @@ void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
 
 void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
     //TODO FIX ME - Overflow
-    int32_t source = (int32_t)readRegister(regs);
-    int32_t constant = (int16_t)imm;
+    int32_t a = (int32_t)readRegister(regs);
+    int32_t b = (int16_t)imm;
 
-    if ((source < 0 && constant < 0 && ((int32_t) (source + constant) > 0)) ||
-        (source > 0 && constant > 0 && ((int32_t) (source + constant) < 0))) {
+    if ((a > 0 && b > INT_MAX - a) || (a < 0 && b < INT_MIN - a)) {
+        std::cerr << "Integer overflow detected (" << a << " + " << b << ")" << std::endl;
         std::exit(-10);
     }
-    writeRegister(regt, (int32_t) (source + constant));
+    writeRegister(regt, a + b);
     advanceProgramCounter(4);
 }
 
