@@ -286,13 +286,13 @@ void CPU::_divu(uint32_t regs, uint32_t regt) {
 }
 
 void CPU::_j(uint32_t target) {
-    uint32_t address = (getProgramCounter() & 0xF0000000) | (target < 2);
+    uint32_t address = (getProgramCounter() & 0xF0000000) | (target << 2);
     setProgramCounter(address);
 }
 
 void CPU::_jal(uint32_t target) {
     writeRegister(31, getProgramCounter() + 8);
-    uint32_t address = (getProgramCounter() & 0xF0000000) | (target < 2);
+    uint32_t address = (getProgramCounter() & 0xF0000000) | (target << 2);
     setProgramCounter(address);
 }
 
