@@ -1,8 +1,6 @@
 // exit code: 0
 // description: Should support print function
 
-#include <string.h>
-
 /******** Setup the stack (DON'T CHANGE THIS SECTION) ********/
 asm("lui $29,0x2400");
 
