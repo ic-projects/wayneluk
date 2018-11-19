@@ -1,5 +1,5 @@
 // exit code: 0
-// description: Should be able to do complex recursive calls (quick sort)
+// description: Should support complex recursive calls (quick sort)
 
 /******** IO macros (DON'T CHANGE THIS SECTION) ********/
 #define EOF (-1)

@@ -26,14 +26,15 @@ except IndexError:
     simulator = DEFAULT_SIMULATOR
 # Check simulator and tests exist
 if not isfile(simulator):
-    print("The simulator binary  " + simulator + " does not exist", file=stderr)
+    print(" ".join(["The simulator binary " + simulator + " does not exist"]), file=stderr)
     exit(1)
 if not isdir(TEST_SRC_PATH):
-    print("The test sources path " + TEST_SRC_PATH + " does not exist", file=stderr)
+    print(" ".join(["The test sources path" + TEST_SRC_PATH + " does not exist"]), file=stderr)
     exit(1)
 if not isdir(TEST_BIN_PATH):
     makedirs(TEST_BIN_PATH)
-# Setup failure counts
+# Setup counts
+passed_count = 0
 skipped_count = 0
 failed_count = 0
 # Iterate through tests
@@ -121,7 +122,10 @@ for f in sorted(listdir(TEST_SRC_PATH)):
             test_timeout = True
         # Check result
         test_passed = (not test_timeout) and test_exit_code == expected_exit_code % 256 and test_output == expected_output
-        failed_count += 1 if not test_passed else 0
+        if test_passed:
+            passed_count += 1
+        else:
+            failed_count += 1
         # Print CSV result line to stdout
         print(", ".join([test_name.upper(),
                          test_name.split("-")[0].upper(),
@@ -154,6 +158,8 @@ for f in sorted(listdir(TEST_SRC_PATH)):
                   "\033[0m", file=stderr)
 # Print summary to stderr
 summary = []
+print("\033[0;1;32m" + str(passed_count) + " " + ("test" if passed_count == 1 else "tests") + " passed" + "\033[0m",
+      file=stderr)
 if failed_count > 0:
     summary.append(str(failed_count) + " " + ("test" if failed_count == 1 else "tests") + " failed")
 if skipped_count > 0:
