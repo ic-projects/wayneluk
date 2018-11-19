@@ -76,13 +76,13 @@ private:
     void _multu(uint32_t regs, uint32_t regt);
     void _or(uint32_t regs, uint32_t regt, uint32_t regd);
     void _ori(uint32_t regs, uint32_t regt, uint16_t imm);
-    void _sb(uint32_t regs, uint32_t regt, uint32_t imm);
+    void _sb(uint32_t regs, uint32_t regt, int16_t imm);
     void _sh(uint32_t regs, uint32_t regt, int16_t imm);
     void _sll(uint32_t regs, uint32_t regd, uint32_t shiftAmt);
     void _sllv(uint32_t regs, uint32_t regt, uint32_t regd);
     void _slt(uint32_t regs, uint32_t regt, uint32_t regd);
     void _slti(uint32_t regs, uint32_t regd, int16_t imm);
-    void _sltiu(uint32_t regs, uint32_t regd, uint32_t imm);
+    void _sltiu(uint32_t regs, uint32_t regd, int16_t imm);
     void _sltu(uint32_t regs, uint32_t regt, uint32_t regd);
     void _sra(uint32_t regs, uint32_t regd, uint32_t shiftAmt);
     void _srav(uint32_t regs, uint32_t regt, uint32_t regd);
@@ -90,7 +90,7 @@ private:
     void _srlv(uint32_t regs, uint32_t regt, uint32_t regd);
     void _sub(uint32_t regs, uint32_t regt, uint32_t regd);
     void _subu(uint32_t regs, uint32_t regt, uint32_t regd);
-    void _sw(uint32_t regs, uint32_t regt, uint32_t imm);
+    void _sw(uint32_t regs, uint32_t regt, int16_t imm);
     void _xor(uint32_t regs, uint32_t regt, uint32_t regd);
     void _xori(uint32_t regs, uint32_t regt, uint16_t imm);
 };

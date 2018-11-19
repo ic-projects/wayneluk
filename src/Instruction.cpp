@@ -304,25 +304,25 @@ void CPU::_jr(uint32_t regs) {
 }
 
 void CPU::_lb(uint32_t regs, uint32_t regt, int16_t imm) {
-    int32_t data = memory->readByte(readRegister(regs) + imm);
-    writeRegister(regt, data);
+    int8_t data = memory->readByte(readRegister(regs) + (int32_t)imm);
+    writeRegister(regt, (int32_t)data);
     advanceProgramCounter(4);
 }
 
 void CPU::_lbu(uint32_t regs, uint32_t regt, int16_t imm) {
-    uint32_t data = memory->readByte(readRegister(regs) + imm);
+    uint32_t data = memory->readByte(readRegister(regs) + (int32_t)imm);
     writeRegister(regt, data);
     advanceProgramCounter(4);
 }
 
 void CPU::_lh(uint32_t regs, uint32_t regt, int16_t imm) {
-    int32_t data = memory->readHalfWord(readRegister(regs) + imm);
-    writeRegister(regt, data);
+    int16_t data = memory->readHalfWord(readRegister(regs) + (int32_t)imm);
+    writeRegister(regt, (int32_t)data);
     advanceProgramCounter(4);
 }
 
 void CPU::_lhu(uint32_t regs, uint32_t regt, int16_t imm) {
-    uint32_t data = memory->readHalfWord(readRegister(regs) + imm);
+    uint32_t data = memory->readHalfWord(readRegister(regs) + (int32_t)imm);
     writeRegister(regt, data);
     advanceProgramCounter(4);
 }
@@ -341,10 +341,14 @@ void CPU::_lwl(uint32_t regs, uint32_t regt, int16_t imm) {
     uint32_t effAddr = readRegister(regs) + (int32_t) imm;
     uint32_t remainder = effAddr % 4;
     uint32_t mask = 0xFFFFFFFF >> (8 * (remainder));
-    uint32_t resultMask = 0xFFFFFFFF >> (8 * (4 - remainder));
-
+    uint32_t resultMask;
+    if(remainder == 0){
+        resultMask = 0;
+    } else {
+        resultMask = 0xFFFFFFFF >> (8 * (4 - remainder));
+    }
     uint32_t memData = memory->readWord(effAddr - remainder);
-    uint32_t data = memData & mask << ((remainder) * 8);
+    uint32_t data = (memData & mask) << ((remainder) * 8);
     uint32_t storedData = readRegister(regt);
     uint32_t newData = (storedData & resultMask) | data;
 
@@ -354,20 +358,21 @@ void CPU::_lwl(uint32_t regs, uint32_t regt, int16_t imm) {
 
 void CPU::_lwr(uint32_t regs, uint32_t regt, int16_t imm) {
 
-    uint32_t effAddr = readRegister(regs) + (int32_t) imm;
+    uint32_t effAddr = (int32_t)readRegister(regs) + (int32_t) imm;
     uint32_t remainder = effAddr % 4;
     uint32_t mask = 0xFFFFFFFF << (8 * (3 - remainder));
-    uint32_t resultMask = 0xFFFFFFFF << (8 * (remainder + 1));
-
+    uint32_t resultMask;
+    if(remainder == 3){
+        resultMask = 0;
+    } else {
+        resultMask = 0xFFFFFFFF << (8 * (remainder + 1));
+    }
     uint32_t memData = memory->readWord(effAddr - remainder);
-    uint32_t data = memData & mask >> ((3- remainder) * 8);
+    uint32_t data = (memData & mask) >> ((3- remainder) * 8);
     uint32_t storedData = readRegister(regt);
     uint32_t newData = (storedData & resultMask) | data;
 
     writeRegister(regt, newData);
-    (void) regs;
-    (void) regt;
-    (void) imm;
     advanceProgramCounter(4);
 }
 
@@ -419,13 +424,13 @@ void CPU::_ori(uint32_t regs, uint32_t regt, uint16_t imm) {
     advanceProgramCounter(4);
 }
 
-void CPU::_sb(uint32_t regs, uint32_t regt, uint32_t imm) {
-    memory->writeByte(readRegister(regs) + imm, readRegister(regt) & 0xFF);
+void CPU::_sb(uint32_t regs, uint32_t regt, int16_t imm) {
+    memory->writeByte(readRegister(regs) + (int32_t)imm, readRegister(regt) & 0xFF);
     advanceProgramCounter(4);
 }
 
 void CPU::_sh(uint32_t regs, uint32_t regt, int16_t imm) {
-    memory->writeHalfWord(readRegister(regs) + imm, (readRegister(regt) & 0x0000FFFF));
+    memory->writeHalfWord(readRegister(regs) + (int32_t)imm, (readRegister(regt) & 0x0000FFFF));
     advanceProgramCounter(4);
 }
 
@@ -449,8 +454,9 @@ void CPU::_slti(uint32_t regs, uint32_t regd, int16_t imm) {
     advanceProgramCounter(4);
 }
 
-void CPU::_sltiu(uint32_t regs, uint32_t regd, uint32_t imm) {
-    writeRegister(regd, (uint32_t) (readRegister(regs) < imm));
+void CPU::_sltiu(uint32_t regs, uint32_t regd, int16_t imm) {
+    int32_t signExt = imm;
+    writeRegister(regd, (uint32_t) (readRegister(regs) < (uint32_t)signExt));
     advanceProgramCounter(4);
 }
 
@@ -497,8 +503,8 @@ void CPU::_subu(uint32_t regs, uint32_t regt, uint32_t regd) {
     advanceProgramCounter(4);
 }
 
-void CPU::_sw(uint32_t regs, uint32_t regt, uint32_t imm) {
-    memory->writeWord(readRegister(regs) + imm, readRegister(regt));
+void CPU::_sw(uint32_t regs, uint32_t regt, int16_t imm) {
+    memory->writeWord(readRegister(regs) + (int32_t)imm, readRegister(regt));
     advanceProgramCounter(4);
 }
 

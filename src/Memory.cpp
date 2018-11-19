@@ -108,7 +108,7 @@ uint16_t Memory::readHalfWord(uint32_t addr) {
     if(addr % 2 == 0) {
         uint16_t val = 0;
         for(uint i = 0; i < sizeof(uint16_t); i++) {
-            val += readByte(addr+i) << (8 * (sizeof(uint32_t)) - i - 1);
+            val += (readByte(addr+i) << (8 * (sizeof(uint16_t) - i - 1)));
         }
         return val;
     }
@@ -117,7 +117,6 @@ uint16_t Memory::readHalfWord(uint32_t addr) {
 }
 
 void Memory::writeHalfWord(uint32_t addr, uint16_t halfword) {
-
     if ((addr >= ADDR_PUTC) && (addr < ADDR_PUTC + 4)) {
         if (addr % 2 != 0) {
             std::exit(-11);
