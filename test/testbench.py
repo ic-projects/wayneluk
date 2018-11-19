@@ -14,7 +14,7 @@ DEFAULT_SIMULATOR = "bin/simulator"
 AUTHORS = ["js4416", "pvk16"]
 
 MIPS_CC = "mips-linux-gnu-gcc"
-MIPS_CCFLAGS = "-W -Wall -fno-builtin -march=mips1 -mfp32"
+MIPS_CCFLAGS = "-W -Wall -fno-builtin -march=mips1 -mfp32 -fno-stack-protector"
 MIPS_LDFLAGS = "-nostdlib -Wl,-melf32btsmip -march=mips1 " \
                "-nostartfiles -mno-check-zero-division -Wl,--gpsize=0 -static -Wl,-Bstatic -Wl,--build-id=none"
 MIPS_OBJCOPY = "mips-linux-gnu-objcopy"
