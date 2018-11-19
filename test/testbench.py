@@ -9,7 +9,7 @@ from sys import argv, stderr
 TEST_SRC_PATH = "test/src"
 TEST_BIN_PATH = "test/bin"
 LINKER_FILE = "test/src/linker.ld"
-DEFAULT_SIMULATOR = "bin/simulator"
+DEFAULT_SIMULATOR = "build/simulator"
 
 AUTHORS = ["js4416", "pvk16"]
 

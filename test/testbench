@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Run this from the root directory!
-bin/dist/testbench/testbench "$@"
+build/dist/testbench/testbench "$@"
