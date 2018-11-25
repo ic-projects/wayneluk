@@ -24,7 +24,7 @@ def print_err(msg):
 
 # Parse command line arg for simulator to use
 simulator = DEFAULT_SIMULATOR
-if len(argv) > 0:
+if len(argv) > 1:
     simulator = argv[1]
 # Check simulator and tests exist
 if not isfile(simulator):
@@ -112,10 +112,10 @@ for f in sorted(listdir(TEST_SRC_PATH)):
         else:
             failed_count += 1
         # Print CSV result line to stdout
-        print("{},\t{},\t{},\t{},\t{}".format(test_name.upper(),
-                                              test_name.split("-")[0].upper(),
-                                              "Pass" if test_passed else "Fail",
-                                              choice(AUTHORS),
+        print("{:<12} {:<10} {:<6} {:<8} {}".format(test_name.upper() + ",",
+                                              test_name.split("-")[0].upper() + ",",
+                                              "Pass," if test_passed else "Fail,",
+                                              choice(AUTHORS) + ",",
                                               description))
         # Print error messages to stderr
         if not test_passed:

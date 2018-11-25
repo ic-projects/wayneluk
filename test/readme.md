@@ -29,4 +29,7 @@ Just delete its source from the `src` directory.
 
 * The testbench uses the Makefile in the project root directory to create its binaries.
   You can use this Makefile to manually check the test binaries.
+* `X` tests are implementation dependant, and so *are not expected to pass for all
+  simulators*. These are just to help us check that our own implementation does what
+  we expect.
 * Tests have a 10 second timeout, so don't write long tests!
