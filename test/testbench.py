@@ -8,28 +8,30 @@ from sys import argv, stderr
 
 TEST_SRC_PATH = "test/src"
 TEST_BIN_PATH = "test/bin"
-LINKER_FILE = "test/src/linker.ld"
 DEFAULT_SIMULATOR = "build/simulator"
-
 AUTHORS = ["js4416", "pvk16"]
 
-MIPS_CC = "mips-linux-gnu-gcc"
-MIPS_CCFLAGS = "-W -Wall -fno-builtin -march=mips1 -mfp32 -fno-stack-protector"
-MIPS_LDFLAGS = "-nostdlib -Wl,-melf32btsmip -march=mips1 " \
-               "-nostartfiles -mno-check-zero-division -Wl,--gpsize=0 -static -Wl,-Bstatic -Wl,--build-id=none"
-MIPS_OBJCOPY = "mips-linux-gnu-objcopy"
+TEST_TIMEOUT_IN_SECONDS = 10
+
+
+def print_msg(msg):
+    print("\033[0;1;32m{}\033[0m".format(msg), file=stderr)
+
+
+def print_err(msg):
+    print("\033[0;1;31m{}\033[0m".format(msg), file=stderr)
+
 
 # Parse command line arg for simulator to use
-try:
+simulator = DEFAULT_SIMULATOR
+if len(argv) > 0:
     simulator = argv[1]
-except IndexError:
-    simulator = DEFAULT_SIMULATOR
 # Check simulator and tests exist
 if not isfile(simulator):
-    print(" ".join(["The simulator binary " + simulator + " does not exist"]), file=stderr)
+    print("The simulator binary {} does not exist".format(simulator), file=stderr)
     exit(1)
 if not isdir(TEST_SRC_PATH):
-    print(" ".join(["The test sources path" + TEST_SRC_PATH + " does not exist"]), file=stderr)
+    print("The test sources path {} does not exist".format(TEST_SRC_PATH), file=stderr)
     exit(1)
 if not isdir(TEST_BIN_PATH):
     makedirs(TEST_BIN_PATH)
@@ -39,58 +41,39 @@ skipped_count = 0
 failed_count = 0
 # Iterate through tests
 for f in sorted(listdir(TEST_SRC_PATH)):
-    if isfile(join(TEST_SRC_PATH, f)) and (f.endswith(".c") or f.endswith(".s")):
+    if isfile(join(TEST_SRC_PATH, f)):
         test_name = f.rsplit(".", 1)[0]
-        # Generate binary
+        # Check this is a source file
         source = ""
         if f.endswith(".s"):
             source = join(TEST_SRC_PATH, "{}.s".format(test_name))
-        else:
+        elif f.endswith(".c"):
             source = join(TEST_SRC_PATH, "{}.c".format(test_name))
-        obj = join(TEST_BIN_PATH, "{}.mips.o".format(test_name))
-        elf = join(TEST_BIN_PATH, "{}.mips.elf".format(test_name))
+        else:
+            continue
+        # Generate binary
         binary = join(TEST_BIN_PATH, "{}.mips.bin".format(test_name))
-        rc = call(" ".join([MIPS_CC,
-                            MIPS_CCFLAGS,
-                            "-c", source,
-                            "-o", obj]),
-                  shell=True)
-        if rc != 0:
-            print("Failed to compile the test source " + source, file=stderr)
+        make_process = Popen("make {}".format(binary),
+                             stdout=PIPE,
+                             stderr=PIPE,
+                             shell=True)
+        _, make_errs = make_process.communicate()
+        make_exit_code = make_process.returncode
+        if make_exit_code != 0:
+            print_err("Failed to compile the test source {}".format(source))
+            print_err("Reason: {}".format("".join(map(chr, make_errs))))
             skipped_count += 1
             continue
-        rc = call(" ".join([MIPS_CC,
-                            MIPS_CCFLAGS,
-                            MIPS_LDFLAGS,
-                            "-T", LINKER_FILE, obj,
-                            "-o", elf]),
-                  shell=True)
-        if rc != 0:
-            print("Failed to link the test object  " + obj, file=stderr)
-            skipped_count += 1
-            continue
-        rc = call(" ".join([MIPS_OBJCOPY,
-                            "-O binary",
-                            "--only-section=.text",
-                            elf,
-                            binary]),
-                  shell=True)
-        if rc != 0:
-            print("Failed to copy the test elf  " + elf, file=stderr)
-            skipped_count += 1
-            continue
-        remove(obj)
-        remove(elf)
         # Get testing info
         expected_exit_code = 0
         description = ""
         with open(source, "r") as source_file:
             lines = source_file.readlines()
             try:
-                expected_exit_code = int(lines[0].split("exit code: ")[-1])
+                expected_exit_code = int(lines[0].split("exit code: ")[-1]) % 256
                 description = lines[1].split("description: ")[-1].strip()
-            except ValueError or IndexError:
-                print("The input file " + source + " is not correctly formatted", file=stderr)
+            except (ValueError, IndexError):
+                print_err("The input file {} is not correctly formatted".format(source))
                 skipped_count += 1
                 continue
         # Get testing input
@@ -106,62 +89,49 @@ for f in sorted(listdir(TEST_SRC_PATH)):
             with open(outputs, "rb") as output_file:
                 expected_output = output_file.read()
         # Run test
-        test_process = Popen(" ".join([simulator, binary]),
+        test_process = Popen("{} {}".format(simulator, binary),
                              stdin=PIPE,
-                             stderr=PIPE,
                              stdout=PIPE,
+                             stderr=PIPE,
                              shell=True)
-        test_output = ""
+        test_output = b""
         test_exit_code = 0
         test_timeout = False
         try:
-            test_output, _ = test_process.communicate(test_input, 5)
+            test_output, _ = test_process.communicate(test_input, TEST_TIMEOUT_IN_SECONDS)
             test_exit_code = test_process.returncode
         except TimeoutExpired:
             test_process.kill()
             test_timeout = True
         # Check result
-        test_passed = (not test_timeout) and test_exit_code == expected_exit_code % 256 and test_output == expected_output
+        test_passed = (not test_timeout) and \
+                      test_exit_code == expected_exit_code % 256 and \
+                      test_output == expected_output
         if test_passed:
             passed_count += 1
         else:
             failed_count += 1
         # Print CSV result line to stdout
-        print(", ".join([test_name.upper(),
-                         test_name.split("-")[0].upper(),
-                         "Pass" if test_passed else "Fail",
-                         choice(AUTHORS),
-                         description]))
+        print("{},\t{},\t{},\t{},\t{}".format(test_name.upper(),
+                                              test_name.split("-")[0].upper(),
+                                              "Pass" if test_passed else "Fail",
+                                              choice(AUTHORS),
+                                              description))
         # Print error messages to stderr
-        if test_timeout:
-            print("\033[0;1;31m" +
-                  "Failed test: " +
-                  test_name.upper() +
-                  ": " + description + "\n" +
-                  "Reason: Timeout after 5 seconds " +
-                  "\033[0m", file=stderr)
-        elif test_exit_code != expected_exit_code % 256:
-            print("\033[0;1;31m" +
-                  "Failed test: " +
-                  test_name.upper() +
-                  ": " + description + "\n" +
-                  "Reason: Expected exit code " + str(expected_exit_code % 256) +
-                  " but got " + str(test_exit_code) +
-                  "\033[0m", file=stderr)
-        elif test_output != expected_output:
-            print("\033[0;1;31m" +
-                  "Failed test: " +
-                  test_name.upper() +
-                  " (" + description + ")\n" +
-                  "Reason: Expected output: \"" + "".join(map(chr, expected_output)) +
-                  "\" but got \"" + "".join(map(chr, test_output)) + "\"" +
-                  "\033[0m", file=stderr)
+        if not test_passed:
+            print_err("Failed test: {}: {}".format(test_name.upper(), description))
+            if test_timeout:
+                print_err("Reason: Timeout after {} seconds".format(TEST_TIMEOUT_IN_SECONDS))
+            elif test_exit_code != expected_exit_code:
+                print_err("Reason: Expected exit code {} but got {}".format(str(expected_exit_code),
+                                                                            str(test_exit_code)))
+            elif test_output != expected_output:
+                print_err("Reason: Expected output \"{}\" but got \"{}\"".format("".join(map(chr, expected_output)),
+                                                                                 "".join(map(chr, test_output))))
 # Print summary to stderr
 summary = []
-print("\033[0;1;32m" + str(passed_count) + " " + ("test" if passed_count == 1 else "tests") + " passed" + "\033[0m",
-      file=stderr)
+print_msg("{} test{} passed".format(str(passed_count), "" if passed_count == 1 else "s"))
 if failed_count > 0:
-    summary.append(str(failed_count) + " " + ("test" if failed_count == 1 else "tests") + " failed")
+    print_err("{} test{} failed".format(str(failed_count), "" if failed_count == 1 else "s"))
 if skipped_count > 0:
-    summary.append(str(skipped_count) + " " + ("test" if skipped_count == 1 else "tests") + " skipped")
-print("\033[0;1;31m" + " and ".join(summary) + "\033[0m", file=stderr)
+    print_err("{} test{} skipped".format(str(skipped_count), "" if skipped_count == 1 else "s"))
