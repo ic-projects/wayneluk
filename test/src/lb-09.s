@@ -1,5 +1,5 @@
 # exit code: 8
-# description: Loading a byte at address 0x10000003 should throw a memory error
+# description: Loading a byte at address 0x10000003 should return 0x8
 
         .globl entry
 

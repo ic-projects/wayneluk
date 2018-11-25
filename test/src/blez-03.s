@@ -1,5 +1,5 @@
 # exit code: 2
-# description: Branch greater than or equal to with negative offset
+# description: Branch less than or equal to with negative offset
 
         .globl entry
 

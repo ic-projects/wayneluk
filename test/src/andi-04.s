@@ -1,5 +1,5 @@
 # exit code: 65535
-# description: ANDI the same number should return the number
+# description: ANDI 0xFFFF and 0xFFFF should return 0xFFFF (all 1s)
 
         .globl entry
 

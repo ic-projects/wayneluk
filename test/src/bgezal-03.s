@@ -1,5 +1,5 @@
 # exit code: 3
-# description: Branch when greater than or equal to 0
+# description: Branch when greater than or equal to 0 with negative offset
 
         .globl entry
 

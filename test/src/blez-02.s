@@ -1,5 +1,5 @@
 # exit code: 3
-# description: No branching when not less than or equal to 0
+# description: No branching if greater than to 0
 
         .globl entry
 

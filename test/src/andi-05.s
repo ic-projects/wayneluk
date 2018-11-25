@@ -1,5 +1,5 @@
 # exit code: 15
-# description: ANDI the same number should return the number
+# description: ANDI 0xFFFF and 0xF should return 0xF
 
         .globl entry
 
