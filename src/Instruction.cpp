@@ -158,7 +158,6 @@ void CPU::_add(uint32_t regs, uint32_t regt, uint32_t regd) {
 }
 
 void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
-    //TODO FIX ME - Overflow
     int32_t a = (int32_t)readRegister(regs);
     int32_t b = (int16_t)imm;
 
@@ -171,12 +170,12 @@ void CPU::_addi(uint32_t regs, uint32_t regt, uint32_t imm) {
 }
 
 void CPU::_addiu(uint32_t regs, uint32_t regt, int16_t imm) {
-    writeRegister(regt, readRegister(regs) + imm);
+    writeRegister(regt, (int32_t)readRegister(regs) + (int32_t)imm);
     advanceProgramCounter(4);
 }
 
 void CPU::_addu(uint32_t regs, uint32_t regst, uint32_t regsd) {
-    writeRegister(regsd, readRegister(regs) + readRegister(regst));
+    writeRegister(regsd, (int32_t)readRegister(regs) + (int32_t)readRegister(regst));
     advanceProgramCounter(4);
 }
 
@@ -193,7 +192,6 @@ void CPU::_andi(uint32_t regs, uint32_t regt, uint16_t imm) {
 }
 
 void CPU::_beq(uint32_t regs, uint32_t regt, int16_t imm) {
-    // TODO - FIX ME - ADVANCEPC(4) should be in else?
     if (readRegister(regs) == readRegister(regt)) {
         advanceProgramCounter(imm << 2);
     } else {
