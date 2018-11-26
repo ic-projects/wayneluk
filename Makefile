@@ -21,14 +21,14 @@ build/testbench:
 simulator:
 	@>&2 echo "\033[0;1;31mThis is a dummy makefile for automated testing purposes only!\033[0m"
 	@>&2 echo "\033[0;1;31mPlease use \`make build\` to build the simulator.\033[0m"
-	mkdir -p bin && cp build/simulator bin/mips_simulator
+	@mkdir -p bin && cp build/simulator bin/mips_simulator
 
 # Dummy for build testbench to conform to spec.
 # To actually build, use `make build`.
 testbench:
 	@>&2 echo "\033[0;1;31mThis is a dummy makefile for automated testing purposes only!\033[0m"
 	@>&2 echo "\033[0;1;31mPlease use \`make build\` to build the testbench.\033[0m"
-	mkdir -p bin && cp build/testbench bin/mips_testbench
+	@mkdir -p bin && cp build/testbench bin/mips_testbench
 
 ########################################################################################################################
 
