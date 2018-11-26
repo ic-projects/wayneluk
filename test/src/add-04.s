@@ -7,3 +7,4 @@ entry:
         li $t0, 1361266021
         li $t1, 786217627
         add $v0, $t0, $t1
+        jr $zero

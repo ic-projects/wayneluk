@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Storing 'c' to missalligned memory ADDR_PUTC + 3 should throw a memory misallignment error
+# description: Storing 'c' to missalligned memory ADDR_PUTC + 3 should throw a memory misalignment error
 
       .globl entry
 

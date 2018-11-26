@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Storing 'c' to halfword ADDR_PUTC + 3 should throw a misalligned memory error
+# description: Storing 'c' to halfword ADDR_PUTC + 3 should throw a misaligned memory error
 
       .globl entry
 

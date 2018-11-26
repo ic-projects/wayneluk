@@ -5,3 +5,4 @@
 
 entry:
         lw $t1, 0x20000001
+        jr $zero
