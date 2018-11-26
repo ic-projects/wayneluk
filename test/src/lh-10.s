@@ -1,5 +1,5 @@
 # exit code: 8
-# description: Loading a byte at address 0x30000008 should throw a memory error
+# description: Loading a halfword with negative offset at address 0x10000002 should return 0x0008
 
         .globl entry
 

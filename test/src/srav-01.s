@@ -1,5 +1,5 @@
 # exit code: 7
-# description: Shift right by 5
+# description: Shift right by 1
 
        .globl entry
 

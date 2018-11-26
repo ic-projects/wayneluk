@@ -1,5 +1,5 @@
 # exit code: 32
-# description: Loading a byte at address 0x10000003 should throw a memory error
+# description: Loading a bytes from addresses 0x10000003 to 0x10000000 should return 0x08000920
 
         .globl entry
 

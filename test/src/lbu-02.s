@@ -1,5 +1,5 @@
 # exit code: 9
-# description: Loading a byte at address 0x30000008 should throw a memory error
+# description: Loading the byte at address 0x10000001 should return 0x9
 
         .globl entry
 

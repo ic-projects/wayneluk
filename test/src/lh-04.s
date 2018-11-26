@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Loading a byte at address 0x24000007 should throw a memory misallignment error
+# description: Loading a halfword at address 0x24000007 should throw a memory misallignment error
 
         .globl entry
 

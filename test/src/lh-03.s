@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Loading a byte at address 0x11000000 should throw a memory error
+# description: Loading a halfword at address 0x11000000 should throw a memory error
 
         .globl entry
 

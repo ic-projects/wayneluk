@@ -1,5 +1,5 @@
 # exit code: -5
-# description: stored the value 5 into the LOW register
+# description: stored the value -5 into the LOW register
 
         .globl entry
 

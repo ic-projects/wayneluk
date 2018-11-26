@@ -1,5 +1,5 @@
 # exit code: 9
-# description: Loading a byte at address 0x10000003 should throw a memory error
+# description: Loading halfwords at address 0x10000002 and 0x10000000 and combining them should return 0x00082009
 
         .globl entry
 

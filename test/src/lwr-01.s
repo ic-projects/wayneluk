@@ -1,5 +1,5 @@
 # exit code: 254
-# description: Loading a word with negative offset should return what was stored there
+# description: Loading a word right with offset of 0 should return 0x000000FE
 
        .globl entry
 

@@ -1,5 +1,5 @@
 # exit code: -1
-# description: Loading a word with negative offset should return what was stored there
+# description: Load word left with no missallignment stored at address 0x20000000 should return -1
 
        .globl entry
 

@@ -1,5 +1,5 @@
 # exit code: 2550136832
-# description: Loading a word with negative offset should return what was stored there
+# description: Loading a word with offset of 3 should return 0x98000000
 
        .globl entry
 
