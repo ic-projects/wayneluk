@@ -1,9 +1,9 @@
-# exit code: 4294901760
-# description: Xoring 0xFFFFFFFF and 0xFFFF should return 0xFFFF0000
+# exit code: 240
+# description: Xoring 0xFF and 0xF should return 0xF0
 
         .globl entry
 
 entry:
-        li $t1, 0xFFFFFFFF
-        xori $v0, $t1, 0xFFFF
+        li $t1, 0xFF
+        xori $v0, $t1, 0xF
         jr $zero
