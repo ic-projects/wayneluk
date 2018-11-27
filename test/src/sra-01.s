@@ -1,5 +1,5 @@
 # exit code: 1
-# description: Shift right by 5
+# description: Shift the value 0xFFFF right by 15 should return 1
 
        .globl entry
 

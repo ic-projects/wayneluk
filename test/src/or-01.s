@@ -1,5 +1,5 @@
 # exit code: 16777215
-# description: OR 0xFFFFFF and 0 return 16777215
+# description: OR 0xFFFFFF and 0 return 0xFFFFFF
 
         .globl entry
 

@@ -498,7 +498,7 @@ void CPU::_sub(uint32_t regs, uint32_t regt, uint32_t regd) {
 }
 
 void CPU::_subu(uint32_t regs, uint32_t regt, uint32_t regd) {
-    writeRegister(regd, readRegister(regs) - readRegister(regt));
+    writeRegister(regd, (int32_t)readRegister(regs) - (int32_t)readRegister(regt));
     advanceProgramCounter(4);
 }
 

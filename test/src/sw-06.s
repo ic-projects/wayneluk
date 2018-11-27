@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Storing 'c' to address 0x200000001 should throw a mis-alligned memory error
+# description: Storing a value to address 0x200000001 should throw a mis-alligned memory error
 
       .globl entry
 

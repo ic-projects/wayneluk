@@ -1,5 +1,5 @@
 # exit code: 0
-# description: 5 less than 5 return 0
+# description: 5 less than -5 return 0
 
        .globl entry
 

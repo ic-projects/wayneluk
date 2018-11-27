@@ -6,5 +6,5 @@
 entry:
         li $t1, 15
         li $t3,  20
-        sub $v0, $t1, $t3
+        subu $v0, $t1, $t3
         jr $zero

@@ -1,5 +1,5 @@
 # exit code: -8
-# description: Shift right by 33
+# description: Shift the value -15 right by 33 should return -8
 
        .globl entry
 

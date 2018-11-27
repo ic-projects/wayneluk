@@ -1,5 +1,5 @@
 # exit code: 1
-# description: 35 is less than 40 return 1
+# description: If 35 is less than 40 return 1
 
        .globl entry
 
