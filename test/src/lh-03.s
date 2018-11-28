@@ -6,3 +6,4 @@
 entry:
         li $t1, 0x11000000
         lh $t0, 0($t1)
+        jr $zero

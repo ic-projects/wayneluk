@@ -1,5 +1,5 @@
 # exit code: -11
-# description: Storing 'c' to address 0x00000000 should throw a memory error - no write access
+# description: Storing a value to address 0x00000000 should throw a memory error - no write access
 
       .globl entry
 

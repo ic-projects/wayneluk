@@ -113,10 +113,10 @@ for f in sorted(listdir(TEST_SRC_PATH)):
             failed_count += 1
         # Print CSV result line to stdout
         print("{:<12} {:<10} {:<6} {:<8} {}".format(test_name.upper() + ",",
-                                              test_name.split("-")[0].upper() + ",",
-                                              "Pass," if test_passed else "Fail,",
-                                              choice(AUTHORS) + ",",
-                                              description))
+                                                    test_name.split("-")[0].upper() + ",",
+                                                    "Pass," if test_passed else "Fail,",
+                                                    choice(AUTHORS) + ",",
+                                                    description))
         # Print error messages to stderr
         if not test_passed:
             print_err("Failed test: {}: {}".format(test_name.upper(), description))

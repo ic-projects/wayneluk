@@ -1,5 +1,5 @@
 # exit code: 99
-# description: Storing 'c' to address 0x20000004 should store the value at that address
+# description: Storing a value to address 0x20000004 should store the value at that address (negative offset)
 
       .globl entry
 

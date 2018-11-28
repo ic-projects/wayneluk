@@ -1,5 +1,5 @@
 # exit code: 7
-# description: Shift right by 1
+# description: Shift the value 15 right by 1 should return 7
 
        .globl entry
 
