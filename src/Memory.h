@@ -9,6 +9,15 @@
 #define ADDR_DATA 0x20000000
 #define ADDR_PUTC 0x30000004
 #define ADDR_GETC 0x30000000
+#define SHIFT8 8
+#define SHIFT16 16
+#define SHIFT24 24
+#define LOW8MASK  0x000000FF
+#define SECOND8MASK 0x0000FF00
+#define THIRD8MASK 0x00FF0000
+#define LAST8MASK 0xFF000000
+
+#define MEMERR -11
 
 #include <cstdint>
 #include <istream>
